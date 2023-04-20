@@ -4,13 +4,13 @@ import pandas as pd
 
 
 class EXCEL2CSV:
-    def __init__(self, directory: str) -> None:
+    def __init__(self, directory: str, header=True) -> None:
         """
         Constructor function
         :param directory: list specifying the path (root folder) of these doc files
         """
         self.directory = directory
-        self.batch_convert_to_csv()
+        self.batch_convert_to_csv(header)
 
     def convert_to_csv(self, file_path, header):
         """
