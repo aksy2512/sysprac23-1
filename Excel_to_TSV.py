@@ -3,7 +3,7 @@ import multiprocessing
 import pandas as pd
 
 
-class EXCEL2CSV:
+class EXCEL2TSV:
     def __init__(self, directory: str) -> None:
         """
         Constructor function
@@ -19,7 +19,7 @@ class EXCEL2CSV:
         """
         try:
             excelFile = pd.read_excel(file_path)
-            excelFile.to_csv(file_path.replace(".xlsx", ".csv"), index=None, header=header)
+            excelFile.to_csv(file_path.replace(".xlsx", ".tsv"), sep='\t', index=False, header=header)
             print(f"Successfully converted {file_path} to PDF.")
         except Exception as e:
             print(f"Failed to convert {file_path} to PDF. Error: {e}")
