@@ -1,10 +1,11 @@
 # importing all modules
-from DOCX_to_PDF import *
-from PDF_to_DOCX import *
+# from DOCX_to_PDF import *
+# from PDF_to_DOCX import *
 # from Excel_to_CSV import *
 # from Excel_to_TSV import *
 # from PDF_to_Image import *
 # from image_converter import *
+# from HTML_to_PDF import *
 
 if __name__ == '__main__':
     # important to avoid recursion
@@ -18,5 +19,9 @@ if __name__ == '__main__':
     # dir = "PDFData"
     # temp = PDF2IMAGE(dir)
     # temp = convert_image('ImageData/a2.jpg', 'png')
-    dir = "PDF2DOCDATA"
-    temp = PDF2DOCX(dir)
+    # dir = "PDF2DOCDATA"
+    # temp = PDF2DOCX(dir)
+    # test html to pdf
+    # dir = "HTMLData"
+    # temp = HTML2PDF(dir)
+    pass
