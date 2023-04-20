@@ -13,6 +13,16 @@ TransformX is a file conversion service that allows users to convert various fil
 - Conversion engine with high accuracy and fast processing speeds
 - Secure file transfer and storage with encryption, authentication, and access controls
 
+### To run the source code :
+1. Clone the repository or Extract the submitted ZIP file
+2. You will need an installation of Python 3.7 or newer
+3. From the terminal/command line, `cd` into the root folder of the repo
+4. Create a virtual environment, `python3 -m venv ./venv`
+5. Activate the venv, `source ./venv/bin/activate` on \*nix or `venv\Scripts\activate.bat` on CMD
+6. Install the required libraries, `pip3 install -r requirements.txt`
+7. Entrypoint : Run `python3 app.py`
+8. This will start a flask webserver on port 5115. You can open the website in your browser at `http://localhost:5000/`
+
 ## Usage
 
 To use TransformX, simply visit the web interface and select the file you want to convert. Choose the desired output format and click the convert button. The converted file will be available for download within a few minutes. If you prefer to use the API, you can integrate TransformX with your application using the provided API documentation.
