@@ -3,6 +3,7 @@ from DOCX_to_PDF import *
 from Excel_to_CSV import *
 from Excel_to_TSV import *
 from PDF_to_Image import *
+from image_converter import *
 
 if __name__ == '__main__':
     # important to avoid recursion
@@ -13,5 +14,6 @@ if __name__ == '__main__':
     # dir = "ExcelData"
     # temp = EXCEL2TSV(dir)
     # test pdf to image
-    dir = "PDFData"
-    temp = PDF2IMAGE(dir)
+    # dir = "PDFData"
+    # temp = PDF2IMAGE(dir)
+    temp = convert_image('ImageData/a2.jpg', 'png')
