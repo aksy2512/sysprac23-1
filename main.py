@@ -1,7 +1,7 @@
 # importing all modules
 from DOCX_to_PDF import *
 from PDF_to_DOCX import *
-from Audio_to_PDF import *
+# from Audio_to_PDF import *
 # from Excel_to_CSV import *
 # from Excel_to_TSV import *
 # from PDF_to_Image import *
@@ -23,4 +23,4 @@ if __name__ == '__main__':
     # dir = "PDF2DOCDATA"
     # temp = PDF2DOCX(dir)
     dir = "Audiodata"
-    temp = AUD2PDF(dir)
+    # temp = AUD2PDF(dir)
