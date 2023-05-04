@@ -27,21 +27,21 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-app = Flask('sysprac')
+app = Flask(__name__)
+app.app_context().push()
 
 
 # making database
 app.config['SQLALCHEMY_DATABASE_URI'] ='sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 db = SQLAlchemy(app)
 
-# ...
 
 class User(db.Model):
     user_uuid = db.Column(db.Integer, primary_key=True)
     file_uuid = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+    desiredExtension = db.Column(db.String(100), nullable=False)
     path  = db.Column(db.String(100), nullable=False)
     created_at = db.Column(db.DateTime(timezone=True),
                            server_default=func.now())
@@ -50,15 +50,14 @@ class User(db.Model):
 
     def __repr__(self):
         print("#"*100)
-        print("User_Id: {}\nFile_Id: {}\nFile Name: {}\nPath: {}\nCreated at: {}\nStatus: \
-              {}".format(self.user_uuid,self.file_uuid,self.name,self.path,self.created_at,self.status))
+        print("User_Id: {}\nFile_Id: {}\nFile Name: {}\ndesiredExtension: {}\nPath: {}\nCreated at: {}\nStatus: \
+              {}".format(self.user_uuid,self.file_uuid,self.name,self.desiredExtension,self.path,self.created_at,self.status))
         print("#"*100)
         return f'File: {self.path}'
 
 # only run once
-
-# with app.app_context():
-#     db.create_all()
+with app.app_context():
+    db.create_all()
 
     # db.session.add(User('admin', 'admin@example.com'))
     # db.session.add(User('guest', 'guest@example.com'))
@@ -128,12 +127,12 @@ def upload_page():
                 # add relevant values in files_list to pass in starmap
                 timestamp=datetime.datetime.now().isoformat(sep=" ")
                 # [user_uuid,id,timestamp,desiredExtension]
-                obj = User(user_uuid=user_uuid,file_uuid=id,name=filename,path=str(os.path.join("uploads",filename)))
+                obj = User(user_uuid=user_uuid,file_uuid=id,name=filename,desiredExtension=desiredExtension,path=str(os.path.join("uploads",filename)))
                 db.session.add(obj)
                 db.session.commit()
             # logger.info(f"Created file {id}")
 
-        
+        os.system('python convert.py')
 
         return redirect(f'/display', 303) 
         # user is directed to /display and using AJAX, converted files are displayed
