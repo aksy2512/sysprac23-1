@@ -9,4 +9,8 @@ Pillow==9.4.0
 Pillow==9.5.0
 python-dotenv==1.0.0
 python_magic==0.4.27
- 
+SpeechRecognition
+fpdf
+pydub
+docx2pdf
+pdfplumber
