@@ -52,29 +52,21 @@ def upload_page():
     files = request.files.getlist('formFile')
     desiredExtension = request.form['fileType']
 
+    folder_id=str(uuid.uuid1())
+    files_list={}   # tuples list for starmap
     for f in files:
-        if(check_extension(f, desiredExtension)):
-            id = str(uuid.uuid1())
-            d = os.path.join(PATHBASE, 'uploads', id)
-            print(d)
-            if not os.path.isdir(d):
-                os.mkdir(d)
-            f.save(os.path.join(d,'raw'))
-        
+        if(check_extension(f, desiredExtension)):            
+            id = str(uuid.uuid1())  # file id
+            
+            # add relevant values in files_list to pass in starmap
     
-    logger.info(f"Created file {id}")
     
-    # DATA = Table(names=('id','upload_time','filename','status','message','error_included'), 
-    #          dtype=(str,datetime.datetime,'object',str,'object',bool))
-    # Store for each file in data structure
-    # [id,datetime.datetime.now(),f.filename,'PROCESSING status']
-    # 
+            # logger.info(f"Created file {id}")
+            
+    # create pool, call starmap,etc
+    # pool.starmap(convert function, files_list)
 
-
-
-    #t = threading.Thread(target=<functions>,args=(id, request.form))
-    #t.start()
-    # execute functions internally for each uploaded file
+    
 
     return redirect(f'/display', 303) 
     # user is directed to /display and using AJAX, converted files are displayed
