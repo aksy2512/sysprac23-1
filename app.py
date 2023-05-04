@@ -1,7 +1,5 @@
-from flask import Flask, render_template, request, redirect, send_file
+from flask import Flask, flash, request, redirect, url_for, redirect, render_template
 from dotenv import load_dotenv
-
-# import fileparsers
 import os
 import shutil
 import datetime
@@ -10,12 +8,66 @@ import logging
 import uuid
 import time
 import magic
-# from astropy.table import Table
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import func
+from werkzeug.utils import secure_filename
 
 load_dotenv()
 PATHBASE = os.path.abspath(os.path.dirname(__file__))
 
+if 'uploads' not in os.listdir():
+    print("Creating Upload directory.....")
+    os.makedirs('uploads')
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+app = Flask(__name__)
+# sets max payload limit of 16MB
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 app = Flask('sysprac')
+
+
+# making database
+app.config['SQLALCHEMY_DATABASE_URI'] ='sqlite:///database.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+# ...
+
+class User(db.Model):
+    user_uuid = db.Column(db.Integer, primary_key=True)
+    file_uuid = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    path  = db.Column(db.String(100), nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True),
+                           server_default=func.now())
+    status = db.Column(db.String(100), nullable=False,server_default="Pending")
+    
+
+    def __repr__(self):
+        print("#"*100)
+        print("User_Id: {}\nFile_Id: {}\nFile Name: {}\nPath: {}\nCreated at: {}\nStatus: \
+              {}".format(self.user_uuid,self.file_uuid,self.name,self.path,self.created_at,self.status))
+        print("#"*100)
+        return f'File: {self.path}'
+
+# only run once
+
+# with app.app_context():
+#     db.create_all()
+
+    # db.session.add(User('admin', 'admin@example.com'))
+    # db.session.add(User('guest', 'guest@example.com'))
+    # db.session.commit()
+
+    # users = User.query.all()
+    # print(users)
+
+
 
 
 logger = logging.getLogger('webserver')
@@ -30,6 +82,8 @@ logging.basicConfig(level=logging.INFO,
 
 @app.route('/')
 def landing_page():
+    users = User.query.all()
+    print(users)
     """Home page. User can upload files from here"""
     return render_template('landing.html')
 
@@ -45,31 +99,49 @@ def check_extension(file, ext):
     else:
         return False
 
-@app.route('/upload', methods=['POST'])
+@app.route('/upload', methods=['POST','GET'])
 def upload_page():
-    print(PATHBASE)
-
-    files = request.files.getlist('formFile')
-    desiredExtension = request.form['fileType']
-
-    folder_id=str(uuid.uuid1())
-    files_list={}   # tuples list for starmap
-    for f in files:
-        if(check_extension(f, desiredExtension)):            
-            id = str(uuid.uuid1())  # file id
+    if request.method == 'POST':
+         # check if the post request has the file part
+        if 'formFile' not in request.files:
+            flash('No file part')
+            return render_template('landing.html')
+        # else fetching the files
+        files = request.files.getlist('formFile')
             
-            # add relevant values in files_list to pass in starmap
-    
-    
+        # target extension
+        desiredExtension = request.form['fileType']
+
+        # unique user id
+        user_uuid=str(uuid.uuid1())
+        # files_descp = []
+
+        for f in files:
+            if(check_extension(f, desiredExtension)):  
+                # extract name of file
+                filename = secure_filename(f.filename)
+                # new name
+                filename = filename.split(".")[0]+"_"+str(datetime.datetime.now()).replace(" ", "")+"."+filename.split(".")[1]
+                # saving files locally
+                f.save(os.path.join("uploads",filename))          
+                id = str(uuid.uuid1())  # file id
+                # add relevant values in files_list to pass in starmap
+                timestamp=datetime.datetime.now().isoformat(sep=" ")
+                # [user_uuid,id,timestamp,desiredExtension]
+                obj = User(user_uuid=user_uuid,file_uuid=id,name=filename,path=str(os.path.join("uploads",filename)))
+                db.session.add(obj)
+                db.session.commit()
             # logger.info(f"Created file {id}")
-            
-    # create pool, call starmap,etc
-    # pool.starmap(convert function, files_list)
 
-    
+        
 
-    return redirect(f'/display', 303) 
-    # user is directed to /display and using AJAX, converted files are displayed
+        return redirect(f'/display', 303) 
+        # user is directed to /display and using AJAX, converted files are displayed
+    else:
+        """Home page. User can upload files from here"""
+        return render_template('landing.html')
+
+    # print(PATHBASE)
 
 @app.route('/display')
 def display_page():
