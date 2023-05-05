@@ -42,22 +42,25 @@ class User(db.Model):
     file_uuid = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     desiredExtension = db.Column(db.String(100), nullable=False)
+    originalExtension = db.Column(db.String(100), nullable=False)
     path  = db.Column(db.String(100), nullable=False)
     created_at = db.Column(db.DateTime(timezone=True),
                            server_default=func.now())
     status = db.Column(db.String(100), nullable=False,server_default="Pending")
+    converted_file_path  = db.Column(db.String(100), nullable=False,server_default="NaN")
     
 
     def __repr__(self):
-        print("#"*100)
-        print("User_Id: {}\nFile_Id: {}\nFile Name: {}\ndesiredExtension: {}\nPath: {}\nCreated at: {}\nStatus: \
-              {}".format(self.user_uuid,self.file_uuid,self.name,self.desiredExtension,self.path,self.created_at,self.status))
-        print("#"*100)
+        print("-"*50)
+        print("User_Id: {}\nFile_Id: {}\nFile Name: {}\nCurrentExtension: {}\ndesiredExtension: {}\nPath: {}\nCreated at: {}\nStatus: \
+              {}\nconverted_file_path: {}".format(self.user_uuid,self.file_uuid,self.name,self.originalExtension,self.desiredExtension,\
+                         self.path,self.created_at,self.status,self.converted_file_path))
+        print("-"*50)
         return f'File: {self.path}'
 
 # only run once
-with app.app_context():
-    db.create_all()
+# with app.app_context():
+#     db.create_all()
 
     # db.session.add(User('admin', 'admin@example.com'))
     # db.session.add(User('guest', 'guest@example.com'))
@@ -78,7 +81,6 @@ logging.basicConfig(level=logging.INFO,
 # BEGIN server route definitions
 # ***************************************
 
-
 @app.route('/')
 def landing_page():
     users = User.query.all()
@@ -86,17 +88,20 @@ def landing_page():
     """Home page. User can upload files from here"""
     return render_template('landing.html')
 
-
-def check_extension(file, ext):
-    contents = file.read()
-    # file.read() makes file pointer points to last position, make the file pointer to first position by using file.seek()
-    file.seek(0)
-    fileType = magic.from_buffer(contents)
-    fileType = fileType.split(' ')[0].lower()
-    if(fileType == ext):
-        return True
+def check_extension(file_path, ext):
+    file_types = {"pdf":"PDF","docx":"Word","xlsx":"XLSX"}
+    mime = magic.Magic(mime=True)
+    file_type = mime.from_file(file_path)
+    if 'pdf' in file_type:
+        return 'PDF' == file_types[ext]
+    elif 'word' in file_type:
+        return 'Word' == file_types[ext]
+    elif 'spreadsheet' in file_type:
+        return 'XLSX' == file_types[ext]
+    elif 'png' in file_type:
+        return 'PNG' == file_types[ext]
     else:
-        return False
+        return 'Unknown' == file_types[ext]
 
 @app.route('/upload', methods=['POST','GET'])
 def upload_page():
@@ -109,28 +114,31 @@ def upload_page():
         files = request.files.getlist('formFile')
             
         # target extension
-        desiredExtension = request.form['fileType']
+        originalExtension = request.form['fileType']
+        desiredExtension = request.form['targettype']
 
         # unique user id
         user_uuid=str(uuid.uuid1())
         # files_descp = []
 
         for f in files:
-            if(check_extension(f, desiredExtension)):  
-                # extract name of file
-                filename = secure_filename(f.filename)
-                # new name
-                filename = filename.split(".")[0]+"_"+str(datetime.datetime.now()).replace(" ", "")+"."+filename.split(".")[1]
-                # saving files locally
-                f.save(os.path.join("uploads",filename))          
+            # extract name of file
+            filename = secure_filename(f.filename)
+            # new name
+            filename = filename.split(".")[0]+"_"+str(datetime.datetime.now()).replace(" ", "").replace(".","")+"."+filename.split(".")[1]
+            # saving files locally
+            path =  os.path.join("uploads",filename)
+            f.save(path)  
+            if(check_extension(path, originalExtension)):  
+                print("Here")
                 id = str(uuid.uuid1())  # file id
-                # add relevant values in files_list to pass in starmap
-                timestamp=datetime.datetime.now().isoformat(sep=" ")
                 # [user_uuid,id,timestamp,desiredExtension]
-                obj = User(user_uuid=user_uuid,file_uuid=id,name=filename,desiredExtension=desiredExtension,path=str(os.path.join("uploads",filename)))
+                obj = User(user_uuid=user_uuid,file_uuid=id,name=filename,desiredExtension=desiredExtension,originalExtension=originalExtension,path=path)
                 db.session.add(obj)
                 db.session.commit()
             # logger.info(f"Created file {id}")
+            else:
+                os.remove(path)
 
         os.system('python convert.py')
 
