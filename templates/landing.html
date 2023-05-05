@@ -9,6 +9,7 @@
                 <input class="form-control" type="file" name="formFile" id="formFile" multiple required/>
 
                 <select name="fileType">
+                    <option value="docx">.docx</option>
                     <option value="pdf">.pdf</option>
                     <option value="txt">.txt</option>
                 </select>
@@ -16,6 +17,11 @@
                     Detected File Format : <span id="fileFormatLabel"></span>
                     <input type="hidden" id="fileTypeHint" name="fileTypeHint" value="" />
                 </div>
+                <select name="targettype">
+                    <option value="docx">.docx</option>
+                    <option value="pdf">.pdf</option>
+                    <option value="txt">.txt</option>
+                </select>
                 <ul class="my-2 list-unstyled text-muted formInstructions">
                     <strong> Note : </strong>
                     <div class="mx-3">
