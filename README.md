@@ -31,6 +31,21 @@ TransformX is a file conversion service that allows users to convert various fil
 
 To use TransformX, simply visit the web interface and select the file you want to convert. Choose the desired output format and click the convert button. The converted file will be available for download within a few minutes. If you prefer to use the API, you can integrate TransformX with your application using the provided API documentation.
 
+### Supported Conversions
+
+| From/To   | Image ^ | PDF | DOCX | MP3 | WAV | CSV | TSV |
+|-----------|-----------|-----|------|-----|-----|-----|-----|
+| Image ^ | ✔️         | ✔️   |      |     |     |     |     |
+| PDF       | ✔️         |     | ✔️    |     |     |     |     |
+| DOCX      |           | ✔️   |      |     |     |     |     |
+| MP3       |           | ✔️ *  |      |     | ✔️   |     |     |
+| WAV       |           | ✔️ *  |      | ✔️   |     |     |     |
+| XLSX      |           |     |      |     |     | ✔️   | ✔️   |
+| HTML      |           | ✔️   |      |     |     |     |     |
+
+> **\*** Using Speech Recognition
+> **^** Only Non-Raw Raster Formats
+
 ## Contributing
 
 We welcome contributions from the community! If you have any ideas for new features, bug fixes, or improvements, please feel free to submit a pull request or open an issue on the GitHub repository.

@@ -86,4 +86,9 @@ tr.highlight {
     color: black;
     border: none;
 }
+.invalid-row {
+    color: slategray;
+    background-color: lightgrey;
+    font-style: italic;
+}
 
