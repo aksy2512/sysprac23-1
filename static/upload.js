@@ -41,14 +41,14 @@ function fListRowHTML(file) {
     let content = new DocumentFragment();
     let parentr = document.createElement('tr');
     parentr.innerHTML =  `
-    <input type="file" class="d-none" name="file_${uid}" disabled/>
+    <input type="file" class="d-none" name="file_${uid}" form="submissionform"/>
     <td>${file.name}</td>
     <td>
         <div class="btn-group">
             <span class="btn btn-warning"><i class="bi bi-${svgid(file.type)}"></i></span>
             <span class="btn btn-warning"><i class="bi bi-arrow-right"></i></span>
             <span class="btn btn-warning">
-                <select name="target_${uid}" class="custom-select fixed-input">
+                <select name="target_${uid}" class="custom-select fixed-input" form="submissionform">
                     ${options}
                 </select>
             </span>

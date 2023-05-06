@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <form method="POST" enctype="multipart/form-data" action="http://localhost:5001/upload" class="container-lg">
+        <form method="POST" id="submissionform" enctype="multipart/form-data" action="/upload" class="container-lg">
             <div class="my-3">
                 <table class="table w-100">
                     <thead></thead>
@@ -28,7 +28,7 @@
             </div>
             <div class="row my-4">
                 <div class="col-4"><!--empty--></div>
-                <button type="submit" id="submitBtn" class="col-4 btn btn-primary d-none">Upload</button>
+                <button type="submit" id="submitBtn" form="submissionform" class="col-4 btn btn-primary d-none">Upload</button>
                 <div class="col-4"><!--empty--></div>
             </div>
         </form>
