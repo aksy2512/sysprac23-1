@@ -65,13 +65,25 @@ details .form-control-sm {
     border: 1px solid #ced4da;
 }
 
-.dygraph-ylabel {
-    margin: -1.5rem;
-}
-.dygraph-xlabel {
-    margin: 1rem;
-}
-
 tr.highlight {
     background-color: rgb(215, 250, 255);
 }
+
+#uploadedFiles tr td:nth-child(1) {
+    width: 50%;
+}
+#uploadedFiles .btn-group .btn:nth-child(1),
+#uploadedFiles .btn-group .btn:nth-child(2) {
+    font-size: larger; 
+}
+
+#uploadedFiles .btn select {
+    font-size: large;
+}
+
+.fixed-input {
+    background: none;
+    color: black;
+    border: none;
+}
+
