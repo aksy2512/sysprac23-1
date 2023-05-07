@@ -2,48 +2,40 @@
 <script type="application/javascript" src="/static/upload.js" defer></script>
 {% endblock %} {% block content %}
 <div class="h-100 d-flex align-items-center position-relative px-4" id="uploadContainer">
-    <div class="mx-auto py-5">
-        <form method="POST" enctype="multipart/form-data" action="/upload">
-            <label for="formFile" class="form-label h3 mt-4 mb-2">Select a data file to analyse</label>
-            <div class="my-3">
-                <input class="form-control" type="file" name="formFile" id="formFile" multiple required/>
-
-                <select name="fileType">
-                    <option value="docx">.docx</option>
-                    <option value="pdf">.pdf</option>
-                    <option value="txt">.txt</option>
-                </select>
-                <div id="detectedFileFormat" class="x-form-instructions text-black my-3 d-none">
-                    Detected File Format : <span id="fileFormatLabel"></span>
-                    <input type="hidden" id="fileTypeHint" name="fileTypeHint" value="" />
+    <div class="container-fluid py-5">
+        <div class="my-3 pb-6 align-items-center">
+            <div class="row">
+                <div class="col text-center">
+                    <label class="btn btn-lg btn-primary">
+                        <input type="file" id="formFile" name="formFile" class="d-none"  multiple required
+                        accept="image/*,application/pdf,audio/mpeg,audio/wav,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/html"/>
+                        Select from Computer &nbsp; <i class="bi bi-cloud-upload"></i>
+                    </label>
                 </div>
-                <select name="targettype">
-                    <option value="docx">.docx</option>
-                    <option value="pdf">.pdf</option>
-                    <option value="txt">.txt</option>
-                </select>
-                <ul class="my-2 list-unstyled text-muted formInstructions">
-                    <strong> Note : </strong>
-                    <div class="mx-3">
-                        <li>One file of size upto 200MB is allowed. You can use the file input to browse, or drag and drop a file here.</li>
-                        <li>Files in ... formats can be parsed. Please refer to the user guide for details.</li>
-                    </div>
-                </ul>
+            </div>
+            <div class="row">
+                <div class="col text-center">
+                    <span class="form-label h5 mt-4 mb-2 d-block text-primary"> or drag and drop here!</span>
+                </div>
+            </div>
+        </div>
+        <form method="POST" id="submissionform" enctype="multipart/form-data" action="/upload" class="container-lg">
+            <div class="my-3">
+                <table class="table w-100">
+                    <thead></thead>
+                    <tbody id="uploadedFiles"></tbody>
+                </table>
             </div>
             <div class="row my-4">
-                <div class="col-4">
-                    <!--empty-->
-                </div>
-                <button type="submit" id="submitBtn" class="col-4 btn btn-secondary">Upload</button>
-                <div class="col-4">
-                    <!--empty-->
-                </div>
+                <div class="col-4"><!--empty--></div>
+                <button type="submit" id="submitBtn" form="submissionform" class="col-4 btn btn-primary d-none">Upload</button>
+                <div class="col-4"><!--empty--></div>
             </div>
         </form>
     </div>
     <div id="dragDropDisplay" class="w-100 h-100 mx-0 my-0 position-absolute d-flex align-items-center d-none">
         <div class="mx-auto">
-            <span class="display-1 text-white"><i class="bi bi-upload"></i></span>
+            <span class="display-1 text-white"><i class="bi bi-cloud-upload-fill"></i></span>
         </div>
     </div>
 </div>

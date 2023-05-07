@@ -107,6 +107,10 @@ def check_extension(file_path, ext):
 def upload_page():
     if request.method == 'POST':
          # check if the post request has the file part
+        print(type(request.form), request.form.keys())
+        print(type(request.files), request.files.keys())
+        return render_template('landing.html')
+
         if 'formFile' not in request.files:
             flash('No file part')
             return render_template('landing.html')
