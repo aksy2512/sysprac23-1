@@ -28,9 +28,9 @@ def convert(dest, *args): # called inside starmap
     print("+"*20)
     # iterate over each process
     for current_type in dispatcher.keys():
-        if current_type == "pdf":
+        if current_type == "PDF":
             pass
-        elif current_type == "docx":
+        elif current_type == "DOCX":
             DOCX2PDF(dispatcher[current_type])
             print("Competed processing {} format...".format(current_type))
     
@@ -58,9 +58,10 @@ def convert(dest, *args): # called inside starmap
 
 
 if __name__ == '__main__':
+    print("INside conver.py")
     print(User.query.all())
     # call conversion apis logic
-    # convert("pdf")
+    convert("PDF")
 
     # #examples data
     # data=[['9118c0f8-eaae-11ed-af16-5d2bd66f0fd9','acb0d987-eaae-11ed-af16-5d2bd66f0fd9','pdf'],['9118c0f8-eaae-11ed-af16-5d2bd66f0fd9','acb0d987-eaae-11ed-af16-5d2bd66f0fd9','docx'],['9118c0f8-eaae-11ed-af16-5d2bd66f0fd9','acb0d987-eaae-11ed-af16-5d2bd66f0fd9','pdf']]
