@@ -22,7 +22,7 @@ class PDF2IMAGE:
             images = convert_from_path(file_path)
             for i, image in enumerate(images):
                 filename = file_path.split('.')[0]
-                image.save(f"{filename}_page_{i}.jpg", "JPEG")
+                image.save(f"{filename}_page_{i}.jpg", "JPG")
             print(f"Successfully converted {file_path} to PDF.")
         except Exception as e:
             print(f"Failed to convert {file_path} to PDF. Error: {e}")

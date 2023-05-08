@@ -4,7 +4,7 @@ from API.PDF_to_DOCX import *
 from API.Audio_to_PDF import *
 from API.XLSX_to_CSV import *
 from API.XLSX_to_TSV import *
-from API.PDF_to_JPEG import *
+from API.PDF_to_JPG import *
 from API.image_converter import *
 from API.HTML_to_PDF import *
 from app import User, db
