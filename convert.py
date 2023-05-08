@@ -12,10 +12,9 @@ import magic
 from multiprocessing import Pool,cpu_count
 
 
-
-def convert(file, *args): # called inside starmap
-    # print(file)
-    # file = [file.file_uuid,file.name,file.originalExtension,file.desiredExtension]
+def convert(*file): # called inside starmap
+    print(file)
+    # file = (file.file_uuid,file.name,file.originalExtension,file.desiredExtension)
     originalExtension=file[2]
     desiredExtension=file[3]
 
@@ -23,20 +22,20 @@ def convert(file, *args): # called inside starmap
     if(fn=="WAV_to_PDF" or fn=="MP3_to_PDF"):
         fn="Audio_to_PDF"
     print(fn)
-
-    file = User.query.filter(User.file_uuid == file[0])
+    
+    db_file = User.query.filter(User.file_uuid == file[0])
     try:
-        fn_call=fn + "("+file+")"
+        fn_call=fn + "("+str(file)+")"
         print("Running: ",fn_call)
         eval(fn_call)
         print("Competed processing {} format...".format(fn))
     except:
        # Handling of exception (if required)
        print("Error occurred in", fn)
-       file.status = "Error"
+       db_file.status = "Error"
     else:
         # execute if no exception
-        file.status = "Done"
+        db_file.status = "Done"
     finally:
         # Some code .....(always executed)
         db.session.commit()
@@ -80,7 +79,7 @@ if __name__ == '__main__':
     # print(query)
     dispatcher = []
     for file in query:
-        dispatcher.append([file.file_uuid,file.name,file.originalExtension,file.desiredExtension,file])
+        dispatcher.append((file.file_uuid,file.name,file.originalExtension,file.desiredExtension))
     
     # To test individual files
     # convert(dispatcher[index])
@@ -90,11 +89,11 @@ if __name__ == '__main__':
 
 
     # example dispatcher
-    # [['983cae96-af8a-4fa7-b2f9-458aabd15c53', 'a1_2023-05-0815:48:35257510.jpg', 'JPG', 'JPG', File: uploads/a1_2023-05-0815:48:35257510.jpg], 
-    #  ['e8188470-0957-4820-b35a-0ab83fb6ee32', 'a2_2023-05-0815:48:35270865.png', 'PNG', 'JPG', File: uploads/a2_2023-05-0815:48:35270865.png]]
+    # [('983cae96-af8a-4fa7-b2f9-458aabd15c53', 'a1_2023-05-0815:48:35257510.jpg', 'JPG', 'JPG', File: uploads/a1_2023-05-0815:48:35257510.jpg), 
+    #  ('e8188470-0957-4820-b35a-0ab83fb6ee32', 'a2_2023-05-0815:48:35270865.png', 'PNG', 'JPG', File: uploads/a2_2023-05-0815:48:35270865.png)]
     
     # Call this when all APIs are working fine
-    # p = Pool(processes = 8) #max(len(data),cpu_count())
-    # result_mult = p.starmap(convert, dispatcher)
-    # p.close()
-    # p.join()
+    p = Pool(processes = 8) #max(len(data),cpu_count())
+    result_mult = p.starmap(convert, dispatcher)
+    p.close()
+    p.join()
