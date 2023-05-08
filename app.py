@@ -58,6 +58,21 @@ format_mapping = {
     'TSV':'text/tab-separated-values',
 }
 
+magic_numbers = {
+    "pdf": bytes([0x25, 0x50, 0x44, 0x46]),
+    "png": bytes([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]),
+    "xlsx": bytes([0x50, 0x4b, 0x03, 0x04, 0x14, 0x00, 0x08, 0x08]),
+    "jpg": bytes([0xff, 0xd8, 0xff, 0xe0, 0x00 ,0x10, 0x4a, 0x46]),
+    "docx": bytes([0x50, 0x4b, 0x03, 0x04, 0x14, 0x00, 0x00, 0x00]),
+    "wav": bytes([0x52, 0x49,0x46,0x46 ,0xa6, 0xd3 ,0x1b, 0x00]),
+    "mp3": bytes([0x49, 0x44, 0x33]),
+    "gif": bytes([0x47, 0x49, 0x46, 0x38]),
+    "bmp": bytes([0x42, 0x4d]),
+    "tiff": bytes([0x49, 0x49, 0x2A, 0x00]),
+    "ico": bytes([0x00, 0x00, 0x01, 0x00]),
+    "icns": bytes([0x69, 0x63, 0x6e, 0x73]),
+    "webp": bytes([0x57, 0x45, 0x42, 0x50])
+}
 
 class User(db.Model):
     user_uuid = db.Column(db.Integer, primary_key=True)
@@ -112,20 +127,14 @@ def landing_page():
     return render_template('landing.html')
 
 def check_extension(file_path, ext):
-    return True
-    file_types = {"pdf":"PDF","docx":"Word","xlsx":"XLSX"}
-    mime = magic.Magic(mime=True)
-    file_type = mime.from_file(file_path)
-    if 'pdf' in file_type:
-        return 'PDF' == file_types[ext]
-    elif 'word' in file_type:
-        return 'Word' == file_types[ext]
-    elif 'spreadsheet' in file_type:
-        return 'XLSX' == file_types[ext]
-    elif 'png' in file_type:
-        return 'PNG' == file_types[ext]
-    else:
-        return 'Unknown' == file_types[ext]
+    with open(file_path, 'rb') as f:
+        file_head = f.read()
+        if ext=='txt' or ext=='csv' or ext=='tsv' or ext=='html':
+            return True
+        if file_head.startswith(magic_numbers[ext]):
+            return True
+        return False
+    
 
 @app.route('/upload', methods=['POST','GET'])
 def upload_page():
