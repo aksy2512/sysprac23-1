@@ -33,21 +33,54 @@ window.addEventListener('load', function(e) {
 const _maxFileMegaBytes = 200;
 var _dragDropCount = 0;
 
+const svgid = {
+    'image/bmp' : 'filetype-bmp',
+    'image/gif' : 'filetype-gif',
+    'image/jpeg' : 'filetype-jpg',
+    'image/png' : 'filetype-png',
+    'image/tiff' : 'filetype-tiff',
+    'application/pdf' : 'filetype-pdf',
+    'audio/mpeg' : 'filetype-mp3',
+    'audio/wav' : 'filetype-wav',
+    'text/html' : 'filetype-html',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document' : 'filetype-docx',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : 'filetype-xlsx',
+}
+const mimetypes = {
+    'image/jpeg' : 'JPG',
+    'image/png' : 'PNG',
+    'image/gif' : 'GIF',
+    'image/bmp' : 'BMP',
+    'image/tiff' : 'TIFF',
+    'image/vnd.microsoft.icon' : 'ICO' ,
+    'image/x-icns' : 'ICNS',
+    'image/webp' : 'WEBP',
+    'image/targa' : 'TGA' ,
+    'application/pdf' : 'PDF',
+    'audio/mpeg' : 'MP3',
+    'audio/wav' : 'WAV',
+    'text/html' : 'HTML',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document' : 'DOCX',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : 'XLSX',
+    'text/csv' : 'CSV',
+    'text/tab-separated-values' : 'TSV',
+}
+
 
 function fListRowHTML(file, srctype) {
     let uid = uuidv4();
-    let targettypes = getTargets(file.type);
+    let targettypes = getTargets(srctype);
     let options = targettypes.map(x => `<option value="${x}">${x}</option>`).join('');
     let content = new DocumentFragment();
     let parentr = document.createElement('tr');
     parentr.innerHTML =  `
     <input type="file" class="d-none" name="file_${uid}" form="submissionform"/>
     <input type="text" class="d-none" name="name_${uid}" value="${file.name}" form="submissionform"/>
-    <input type="text" class="d-none" name="srctype_${uid}" value="${srctype}" form="submissionform"/>
+    <input type="text" class="d-none" name="srctype_${uid}" value="${mimetypes[srctype]}" form="submissionform"/>
     <td>${file.name}</td>
     <td>
         <div class="btn-group">
-            <span class="btn btn-warning"><i class="bi bi-${svgid(file.type)}"></i></span>
+            <span class="btn btn-warning"><i class="bi bi-${svgid[srctype] || 'file-earmark-richtext'}"></i></span>
             <span class="btn btn-warning"><i class="bi bi-arrow-right"></i></span>
             <span class="btn btn-warning">
                 <select name="target_${uid}" class="custom-select fixed-input" form="submissionform">
@@ -81,28 +114,12 @@ function fListRowHTMLerr(file, err_msg) {
     return content;
 }
 
-function svgid(mimetype) {
-    switch (mimetype) {
-        case 'image/bmp' : return 'filetype-bmp';
-        case 'image/gif' : return 'filetype-gif';
-        case 'image/jpeg' : return 'filetype-jpg';
-        case 'image/png' : return 'filetype-png';
-        case 'image/tiff' : return 'filetype-tiff';
-        case 'application/pdf' : return 'filetype-pdf';
-        case 'audio/mpeg' : return 'filetype-mp3';
-        case 'audio/wav' : return 'filetype-wav';
-        case 'text/html' : return 'filetype-html';
-        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' : return 'filetype-docx';
-        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : return 'filetype-xlsx';
-        default : return 'file-earmark-richtext';
-    }
-}
 
 function getTargets(mimetype) {
     if (mimetype.slice(0,5) === 'image' && mimetype !== 'image/svg+xml') 
-        return ['JPG', 'PNG', 'GIF', 'BMP', 'TIFF', 'ICO', 'ICNS', 'WEBP', 'TGA', 'EPS', 'PDF'];
+        return ['JPG', 'PNG', 'GIF', 'BMP', 'TIFF', 'ICO', 'ICNS', 'WEBP', 'TGA', 'PDF'];
     else if (mimetype === 'application/pdf') 
-        return ['DOCX', 'JPG', 'PNG', 'GIF', 'BMP', 'TIFF', 'ICO', 'ICNS', 'WEBP', 'TGA', 'EPS'];
+        return ['DOCX', 'JPG', 'PNG', 'GIF', 'BMP', 'TIFF', 'ICO', 'ICNS', 'WEBP', 'TGA'];
     else if (mimetype === 'audio/mpeg') return ['WAV', 'PDF'];
     else if (mimetype === 'audio/wav') return ['MP3', 'PDF'];
     else if (mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') return ['PDF'];
@@ -142,6 +159,8 @@ function inspectFile(content, giventype) {
         return "image/gif";
     } else if (content.slice(0,4) === '\x00\x00\x01\x00') {
         return "image/vnd.microsoft.icon";
+    } else if (content.slice(0,4) === 'icns') {
+        return "image/x-icns";
     } else if (content.slice(0,8) === '\x89\x50\x4E\x47\x0D\x0A\x1A\x0A') {
         return "image/png";
     } else if (content.slice(0,4) === '\x49\x49\x2A\x00' || 

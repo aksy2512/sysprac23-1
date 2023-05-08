@@ -127,6 +127,7 @@ def landing_page():
     return render_template('landing.html')
 
 def check_extension(file_path, ext):
+    return True
     with open(file_path, 'rb') as f:
         file_head = f.read()
         if ext=='txt' or ext=='csv' or ext=='tsv' or ext=='html':
@@ -174,12 +175,12 @@ def upload_page():
         # unique user id
         user_uuid=str(uuid.uuid1())
         # files_descp = []
-
+        print(files.keys())
         for f in files.keys():
             # extract name of file
             filename = files[f]['name']
             # target extension
-            originalExtension = [val for val in format_mapping.keys() if format_mapping[val]==files[f]['srctype']][0]
+            originalExtension = [val for val in format_mapping.keys() if val==files[f]['srctype']][0]
             print(originalExtension)
             desiredExtension = files[f]['target']
             # new name

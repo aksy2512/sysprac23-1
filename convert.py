@@ -1,39 +1,46 @@
 # importing all modules
 from API.DOCX_to_PDF import *
 from API.PDF_to_DOCX import *
-# from Audio_to_PDF import *
-# from Excel_to_CSV import *
-# from Excel_to_TSV import *
-# from PDF_to_Image import *
-# from image_converter import *
-# from HTML_to_PDF import *
+from API.Audio_to_PDF import *
+from API.XLSX_to_CSV import *
+from API.XLSX_to_TSV import *
+from API.PDF_to_JPEG import *
+from API.image_converter import *
+from API.HTML_to_PDF import *
 from app import User, db
 import magic
 from multiprocessing import Pool,cpu_count
 
 
 
-def convert(dest, *args): # called inside starmap
-    query = User.query.filter(User.status == "Pending").order_by(User.created_at.asc()).all()
-    # print(query)
-    dispatcher = {}
-    for file in query:
-        if file.originalExtension not in dispatcher.keys():
-            dispatcher[file.originalExtension] = [file]
-        else:
-            dispatcher[file.originalExtension].append(file)
-    print("+"*20)
-    print("Dispatcher: ")
-    print(dispatcher)
-    print("+"*20)
-    # iterate over each process
-    for current_type in dispatcher.keys():
-        if current_type == "PDF":
-            pass
-        elif current_type == "DOCX":
-            DOCX2PDF(dispatcher[current_type])
-            print("Competed processing {} format...".format(current_type))
-    
+def convert(file, *args): # called inside starmap
+    # print(file)
+    # file = [file.file_uuid,file.name,file.originalExtension,file.desiredExtension]
+    originalExtension=file[2]
+    desiredExtension=file[3]
+
+    fn=originalExtension+"_to_"+desiredExtension
+    if(fn=="WAV_to_PDF" or fn=="MP3_to_PDF"):
+        fn="Audio_to_PDF"
+    print(fn)
+
+    file = User.query.filter(User.file_uuid == file[0])
+    try:
+        fn_call=fn + "("+file+")"
+        print("Running: ",fn_call)
+        eval(fn_call)
+        print("Competed processing {} format...".format(fn))
+    except:
+       # Handling of exception (if required)
+       print("Error occurred in", fn)
+       file.status = "Error"
+    else:
+        # execute if no exception
+        file.status = "Done"
+    finally:
+        # Some code .....(always executed)
+        db.session.commit()
+
 
     ####################################################
     ## convert and save the files
@@ -49,7 +56,7 @@ def convert(dest, *args): # called inside starmap
     # temp = convert_image('ImageData/a2.jpg', 'png')
     # dir = "PDF2DOCDATA"
     # temp = PDF2DOCX(dir)
-    dir = "Audiodata"
+    # dir = "Audiodata"
     # temp = AUD2PDF(dir)
     ####################################################
 
@@ -58,16 +65,36 @@ def convert(dest, *args): # called inside starmap
 
 
 if __name__ == '__main__':
-    print("INside conver.py")
-    print(User.query.all())
+    print("Inside convert.py")
     # call conversion apis logic
-    convert("PDF")
+    # convert("PDF")
+    #########################################################
+    # Testing on same files
+    # temp=User.query.filter()
+    # temp.status = "Pending"
+    # db.session.commit()
+    # print(User.query.all())
+    #########################################################
 
-    # #examples data
-    # data=[['9118c0f8-eaae-11ed-af16-5d2bd66f0fd9','acb0d987-eaae-11ed-af16-5d2bd66f0fd9','pdf'],['9118c0f8-eaae-11ed-af16-5d2bd66f0fd9','acb0d987-eaae-11ed-af16-5d2bd66f0fd9','docx'],['9118c0f8-eaae-11ed-af16-5d2bd66f0fd9','acb0d987-eaae-11ed-af16-5d2bd66f0fd9','pdf']]
+    query = User.query.filter(User.status == "Pending").order_by(User.created_at.asc())
+    # print(query)
+    dispatcher = []
+    for file in query:
+        dispatcher.append([file.file_uuid,file.name,file.originalExtension,file.desiredExtension,file])
+    
+    # To test individual files
+    # convert(dispatcher[index])
+    
+    print(dispatcher)
+
+
+
+    # example dispatcher
+    # [['983cae96-af8a-4fa7-b2f9-458aabd15c53', 'a1_2023-05-0815:48:35257510.jpg', 'JPG', 'JPG', File: uploads/a1_2023-05-0815:48:35257510.jpg], 
+    #  ['e8188470-0957-4820-b35a-0ab83fb6ee32', 'a2_2023-05-0815:48:35270865.png', 'PNG', 'JPG', File: uploads/a2_2023-05-0815:48:35270865.png]]
+    
+    # Call this when all APIs are working fine
     # p = Pool(processes = 8) #max(len(data),cpu_count())
-    # result_mult = p.starmap(convert, data)
+    # result_mult = p.starmap(convert, dispatcher)
     # p.close()
     # p.join()
-    pass
-
