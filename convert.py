@@ -14,11 +14,11 @@ from multiprocessing import Pool,cpu_count
 
 
 def convert(file, *args): # called inside starmap
-    print(file)
-    # [file.file_path,file.name,file.originalExtension,file.desiredExtension]
+    # print(file)
+    # file = [file.file_uuid,file.name,file.originalExtension,file.desiredExtension]
     originalExtension=file[2]
     desiredExtension=file[3]
-    file_path="uploads/"+file[0]
+
     fn=originalExtension+"_to_"+desiredExtension
     if(fn=="WAV_to_PDF" or fn=="MP3_to_PDF"):
         fn="Audio_to_PDF"
@@ -26,7 +26,7 @@ def convert(file, *args): # called inside starmap
 
     file = User.query.filter(User.file_uuid == file[0])
     try:
-        fn_call=fn + "("+file_path+")"
+        fn_call=fn + "("+file+")"
         eval(fn_call)
         print("Running: ",fn_call)
     except:
@@ -39,7 +39,6 @@ def convert(file, *args): # called inside starmap
     finally:
         # Some code .....(always executed)
         db.session.commit()
-        pass
 
     # calls API
     # # iterate over each process
@@ -95,7 +94,7 @@ if __name__ == '__main__':
     
     print(dispatcher)
     # To test individual files
-    # convert(dispatcher[0])
+    # convert(dispatcher[index])
 
 
 
@@ -107,4 +106,4 @@ if __name__ == '__main__':
     p.join()
 
 
-print(User.query.all())
+# print(User.query.all())
