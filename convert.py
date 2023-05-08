@@ -27,8 +27,9 @@ def convert(file, *args): # called inside starmap
     file = User.query.filter(User.file_uuid == file[0])
     try:
         fn_call=fn + "("+file+")"
-        eval(fn_call)
         print("Running: ",fn_call)
+        eval(fn_call)
+        print("Competed processing {} format...".format(fn))
     except:
        # Handling of exception (if required)
        print("Error occurred in", fn)
@@ -40,17 +41,6 @@ def convert(file, *args): # called inside starmap
         # Some code .....(always executed)
         db.session.commit()
 
-    # calls API
-    # # iterate over each process
-    # for current_type in dispatcher.keys():
-    #     if current_type == "PDF":
-    #         pass
-    #     elif current_type == "DOCX":
-    #         print('yeet'*10)
-    #         print(dispatcher[current_type])
-    #         # DOCX2PDF(dispatcher[current_type])
-    #         print("Competed processing {} format...".format(current_type))
-    
 
     ####################################################
     ## convert and save the files
@@ -86,24 +76,25 @@ if __name__ == '__main__':
     # print(User.query.all())
     #########################################################
 
-    query = User.query.filter(User.status == "Pending" or User.status == "Active").order_by(User.created_at.asc()).all()
+    query = User.query.filter(User.status == "Pending").order_by(User.created_at.asc())
     # print(query)
     dispatcher = []
     for file in query:
         dispatcher.append([file.file_uuid,file.name,file.originalExtension,file.desiredExtension,file])
     
-    print(dispatcher)
     # To test individual files
     # convert(dispatcher[index])
+    
+    print(dispatcher)
 
 
 
-    # #examples data
-    # data=[['9118c0f8-eaae-11ed-af16-5d2bd66f0fd9','acb0d987-eaae-11ed-af16-5d2bd66f0fd9','pdf'],['9118c0f8-eaae-11ed-af16-5d2bd66f0fd9','acb0d987-eaae-11ed-af16-5d2bd66f0fd9','docx'],['9118c0f8-eaae-11ed-af16-5d2bd66f0fd9','acb0d987-eaae-11ed-af16-5d2bd66f0fd9','pdf']]
-    p = Pool(processes = 8) #max(len(data),cpu_count())
-    result_mult = p.starmap(convert, dispatcher)
-    p.close()
-    p.join()
-
-
-# print(User.query.all())
+    # example dispatcher
+    # [['983cae96-af8a-4fa7-b2f9-458aabd15c53', 'a1_2023-05-0815:48:35257510.jpg', 'JPG', 'JPG', File: uploads/a1_2023-05-0815:48:35257510.jpg], 
+    #  ['e8188470-0957-4820-b35a-0ab83fb6ee32', 'a2_2023-05-0815:48:35270865.png', 'PNG', 'JPG', File: uploads/a2_2023-05-0815:48:35270865.png]]
+    
+    # Call this when all APIs are working fine
+    # p = Pool(processes = 8) #max(len(data),cpu_count())
+    # result_mult = p.starmap(convert, dispatcher)
+    # p.close()
+    # p.join()
