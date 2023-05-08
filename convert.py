@@ -23,7 +23,9 @@ def convert(*file): # called inside starmap
         fn="Audio_to_PDF"
     print(fn)
     
-    db_file = User.query.filter(User.file_uuid == file[0])
+    db_file = User.query.filter(User.file_uuid == file[0]).first()
+
+    # call conversion apis logic
     try:
         fn_call=fn + "("+str(file)+")"
         print("Running: ",fn_call)
@@ -65,13 +67,11 @@ def convert(*file): # called inside starmap
 
 if __name__ == '__main__':
     print("Inside convert.py")
-    # call conversion apis logic
-    # convert("PDF")
     #########################################################
-    # Testing on same files
-    # temp=User.query.filter()
-    # temp.status = "Pending"
-    # db.session.commit()
+    # Testing on same files by changing their status from Error/Done to Pending
+    result_data = {'status': 'Pending'}
+    User.query.filter_by().update(result_data)
+    db.session.commit()
     # print(User.query.all())
     #########################################################
 
@@ -86,8 +86,6 @@ if __name__ == '__main__':
     
     print(dispatcher)
 
-
-
     # example dispatcher
     # [('983cae96-af8a-4fa7-b2f9-458aabd15c53', 'a1_2023-05-0815:48:35257510.jpg', 'JPG', 'JPG', File: uploads/a1_2023-05-0815:48:35257510.jpg), 
     #  ('e8188470-0957-4820-b35a-0ab83fb6ee32', 'a2_2023-05-0815:48:35270865.png', 'PNG', 'JPG', File: uploads/a2_2023-05-0815:48:35270865.png)]
@@ -97,3 +95,5 @@ if __name__ == '__main__':
     result_mult = p.starmap(convert, dispatcher)
     p.close()
     p.join()
+
+# print(User.query.all())
