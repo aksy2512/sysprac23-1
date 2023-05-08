@@ -11,6 +11,7 @@ import magic
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from werkzeug.utils import secure_filename
+import json
 
 load_dotenv()
 PATHBASE = os.path.abspath(os.path.dirname(__file__))
@@ -188,7 +189,7 @@ def upload_page():
             # saving files locally
             path =  os.path.join("uploads",filename)
             f.save(path)  
-            if(check_extension(path, originalExtension)):  
+            if(check_extension(path, originalExtension.lower())):  
                 print("Here")
                 id = str(files[f]['uuid'])  # file id
                 # [user_uuid,id,timestamp,desiredExtension]
@@ -201,7 +202,7 @@ def upload_page():
 
         os.system('python convert.py')
 
-        return redirect(f'/display', 303) 
+        return redirect(url_for('.display_page',user_uuid=user_uuid)) 
         # user is directed to /display and using AJAX, converted files are displayed
     else:
         """Home page. User can upload files from here"""
@@ -211,8 +212,10 @@ def upload_page():
 
 @app.route('/display')
 def display_page():
+    user_uuid = request.args['user_uuid']
+    print(user_uuid)
     """Display page to download files"""
-    return render_template('display.html')
+    return render_template('display.html', user_uuid=user_uuid)
 
 @app.route('/status/<id>')
 def status_check(id):

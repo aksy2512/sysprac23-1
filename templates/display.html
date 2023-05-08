@@ -8,11 +8,50 @@
     const _uploadID = "{{ id }}";
     console.info("Data Location : ", _uploadID);
 </script>
-<script type="application/javascript" src="/static/visualise.js" defer></script>
+<script type="application/javascript" src="/static/display.js" defer></script>
 {% endblock %} {% block content %}
-<div class="h-100 py-6 px-4">
+
+<div class="h-100 d-flex align-items-center position-relative px-4" id="downloadContainer">
+    <div class="container-fluid py-5">
+        <!-- <div class="my-3 pb-6 align-items-center">
+            <div class="row">
+                <div class="col text-center">
+                    <label class="btn btn-lg btn-primary">
+                        <input type="file" id="formFile" name="formFile" class="d-none"  multiple required
+                        accept="image/*,application/pdf,audio/mpeg,audio/wav,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/html"/>
+                        Select from Computer &nbsp; <i class="bi bi-cloud-upload"></i>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center">
+                    <span class="form-label h5 mt-4 mb-2 d-block text-primary"> or drag and drop here!</span>
+                </div>
+            </div>
+        </div> -->
+        <div class="my-3">
+            <table class="table w-100">
+                <thead></thead>
+                <tbody id="convertedFiles"></tbody>
+            </table>
+        </div>
+        <!-- <form method="POST" id="submissionform" enctype="multipart/form-data" action="/upload" class="container-lg">
+            <div class="row my-4">
+                <div class="col-4"></div>
+                <button type="submit" id="submitBtn" form="submissionform" class="col-4 btn btn-primary d-none">Upload</button>
+                <div class="col-4"></div>
+            </div>
+        </form> -->
+    </div>
+    <!-- <div id="dragDropDisplay" class="w-100 h-100 mx-0 my-0 position-absolute d-flex align-items-center d-none">
+        <div class="mx-auto">
+            <span class="display-1 text-white"><i class="bi bi-cloud-upload-fill"></i></span>
+        </div>
+    </div> -->
+</div>
+
+<!-- <div class="h-100 py-6 px-4">
     <div class="py-4">
-        <!-- Empty -->
     </div>
     <div class="mx-auto">
         <dl class="row">
@@ -44,19 +83,16 @@
     <div class="my-5 d-none" id="mainDivGraph">
         <div class="row">
             <div class="col-sm-1">
-                <!-- Empty -->
             </div>
             <div class="col-sm-10">
                 <div id="plotContainer" class="w-100"></div>
             </div>
             <div class="col-sm-1">
-                <!-- Empty -->
             </div>
         </div>
         <div class="py-4"></div>
         <div class="row">
             <div class="col-sm-1">
-                <!-- Empty -->
             </div>
             <div class="col-sm-10">
                 <ul class="text-muted mb-2">
@@ -66,7 +102,6 @@
                 </ul>
             </div>
             <div class="col-sm-1">
-                <!-- Empty -->
             </div>
         </div>
         <div class="mt-5 d-flex justify-content-center">
@@ -81,7 +116,6 @@
         <div class="py-4"></div>
         <div class="row">
             <div class="col-sm-1">
-                <!-- Empty -->
             </div>
             <div class="col-sm-10">
                 <table id="burstList" class="table table-responsive my-3 mx-3">
@@ -92,9 +126,8 @@
                 </table>
             </div>
             <div class="col-sm-1">
-                <!-- Empty -->
             </div>
         </div>
     </div>
-</div>
+</div> -->
 {% endblock %}
