@@ -5,24 +5,25 @@ from pydub import AudioSegment
 
 
 class MP32WAV:
-    def __init__(self, directory: str) -> None:
+    def __init__(self, directory: tuple) -> None:
         """
         Constructor function
         :param directory: list specifying the path (root folder) of these doc files
         """
         self.directory = directory
-        self.batch_convert_to_wav()
+        self.convert_to_wav(directory[1])
 
-    def convert_to_wav(self, file_path, filename):
+    def convert_to_wav(self, filename):
         """
         Converts .mp3 file to .wav file
         :param file_path: path to the  audio files
         """
+        file_path = 'uploads/' + filename
         try:
                 # create an AudioSegment object from the input file
                 aud = AudioSegment.from_file(file_path)
                 # export the AudioSegment object as a .wav file
-                out_path = os.path.splitext(file_path)[0] + ".wav"
+                out_path = 'converted/'+os.path.splitext(filename)[0] + ".wav"
                 aud.export(out_path, format="wav")
 
 

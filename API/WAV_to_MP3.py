@@ -11,18 +11,19 @@ class WAV2MP3:
         :param directory: list specifying the path (root folder) of these doc files
         """
         self.directory = directory
-        self.batch_convert_to_mp3()
+        self.convert_to_mp3(directory[1])
 
-    def convert_to_mp3(self, file_path, filename):
+    def convert_to_mp3(self, filename):
         """
         Converts .mp3 file to .mp3 file
         :param file_path: path to the  audio files
         """
+        file_path = 'uploads/' + filename
         try:
                 # create an AudioSegment object from the input file
                 aud = AudioSegment.from_file(file_path)
                 # export the AudioSegment object as a .mp3 file
-                out_path = os.path.splitext(file_path)[0] + ".mp3"
+                out_path = 'converted/'+os.path.splitext(filename)[0] + ".mp3"
                 aud.export(out_path, format="mp3")
 
 

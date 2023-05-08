@@ -3,21 +3,23 @@ import multiprocessing
 import pdfkit
 
 class HTML2PDF:
-    def __init__(self, directory: str) -> None:
+    def __init__(self, directory: tuple) -> None:
         """
         Constructor function
         :param directory: list specifying the path (root folder) of these doc files
         """
         self.directory = directory
-        self.batch_convert_to_pdf()
+        self.convert_to_pdf(directory[1])
 
-    def convert_to_pdf(self, file_path):
+    def convert_to_pdf(self, filename):
         """
         Converts a .docx file to .pdf
         :param file_path: path to the .docx file
         """
+        file_path = 'uploads/' + filename
         try:
-            outfile_path = file_path.replace('.html', '.pdf')
+            outfile_path = 'converted/'+os.path.splitext(filename)[0] + ".pdf"
+            # outfile_path = file_path.replace('.html', '.pdf')
             # print(outfile_path)
             pdfkit.from_file(file_path, outfile_path)
             print(f"Successfully converted {file_path} to PDF.")

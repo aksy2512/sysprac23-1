@@ -43,7 +43,6 @@ class DOCX2PDF:
             print(f"Successfully converted {file_path} to PDF.")
         except Exception as e:
             print(e)
-            print("FUCKKKKK "*100)
             print(f"Failed to convert {file_path} to PDF. Error: {e}")
 
     def batch_convert_to_pdf(self):
