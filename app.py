@@ -1,4 +1,4 @@
-from flask import Flask, flash, request, redirect, url_for, redirect, render_template
+from flask import Flask, flash, jsonify, request, redirect, url_for, redirect, render_template
 from dotenv import load_dotenv
 import os
 import shutil
@@ -213,17 +213,38 @@ def display_page():
     """Display page to download files"""
     return render_template('display.html')
 
-# @app.route('/status/<id>')
-# def status_check(id):
-#     """Return JSON with info about whether the uploaded file has been parsed successfully."""
-#     if os.path.isdir(os.path.join(PATHBASE, 'uploads', id)):
-#         for row in fileparsers.DATA:
-#             if row['id']==id :
-#                 stat, msg, err = row['status'], row['message'], bool(row['error_included'])
-#                 break
-#         return {'status':stat, 'message':msg, 'error_included':err}
-#     else :
-#         return '', 404
+@app.route('/status/<id>')
+def status_check(id):
+    """Return JSON with info about whether the uploaded file has been parsed successfully."""
+    query = User.query.filter(User.user_uuid == id).all()
+    response = []
+
+    for file in query:
+        if file.status == 'Done':
+            message = 'File parsed successfully.'
+        elif file.status == 'Pending':
+            message = 'File parsing pending.'
+        else:
+            message = 'File parsing failed.'
+
+        status = file.status
+        response.append({
+            'user_id': file.user_uuid,
+            'file_id': file.file_uuid,
+            'status': status,
+            'message': message
+        })
+
+    return jsonify(response)
+
+    # if os.path.isdir(os.path.join(PATHBASE, 'uploads', id)):
+    #     for row in fileparsers.DATA:
+    #         if row['id']==id :
+    #             stat, msg, err = row['status'], row['message'], bool(row['error_included'])
+    #             break
+    #     return {'status':stat, 'message':msg, 'error_included':err}
+    # else :
+    #     return '', 404
 
 # def cleaner():
     
