@@ -4,19 +4,20 @@ from pdf2image import convert_from_path
 
 
 class PDF2IMAGE:
-    def __init__(self, directory: str) -> None:
+    def __init__(self, directory: tuple) -> None:
         """
         Constructor function
         :param directory: list specifying the path (root folder) of these doc files
         """
         self.directory = directory
-        self.batch_convert_to_image()
+        self.convert_to_image(directory[1])
 
-    def convert_to_image(self, file_path):
+    def convert_to_image(self, filename):
         """
         Converts a .docx file to .pdf
         :param file_path: path to the .docx file
         """
+        file_path = '../uploads/' + filename
         try:
             images = convert_from_path(file_path)
             for i, image in enumerate(images):

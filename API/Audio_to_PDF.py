@@ -7,19 +7,21 @@ from pydub import AudioSegment
 
 
 class AUD2PDF:
-    def __init__(self, directory: str) -> None:
+    def __init__(self, directory: tuple) -> None:
         """
         Constructor function
         :param directory: list specifying the path (root folder) of these doc files
         """
         self.directory = directory
-        self.batch_convert_to_pdf()
+        self.convert_to_pdf(directory[1])
 
-    def convert_to_pdf(self, file_path, filename):
+
+    def convert_to_pdf(self, filename):
         """
         Converts .wav or .mp3file to .pdf file
         :param file_path: path to the  audio files
         """
+        file_path = 'uploads/' + filename
         try:
             # audio to text
             text = ""
@@ -28,7 +30,7 @@ class AUD2PDF:
                 aud = AudioSegment.from_file(file_path)
                 # export the AudioSegment object as a .wav file
                 print(out_path)
-                out_path = os.path.splitext(file_path)[0] + ".wav"
+                out_path= os.path.splitext(file_path)[0]+'wav' 
                 aud.export(out_path, format="wav")
                 r = sr.Recognizer()
                 with sr.AudioFile(out_path) as source:
@@ -54,7 +56,7 @@ class AUD2PDF:
             pdf.cell(200, 10, txt=text, ln=1, align="C")
 
             # save the PDF
-            pdf_path = os.path.splitext(file_path)[0] + ".pdf"
+            pdf_path = 'converted/'+os.path.splitext(filename)[0] + ".pdf"
             pdf.output(pdf_path)
 
         except Exception as e:

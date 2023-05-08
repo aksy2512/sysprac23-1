@@ -4,22 +4,24 @@ import pandas as pd
 
 
 class EXCEL2TSV:
-    def __init__(self, directory: str, header=True) -> None:
+    def __init__(self, directory: tuple, header=True) -> None:
         """
         Constructor function
         :param directory: list specifying the path (root folder) of these doc files
         """
         self.directory = directory
-        self.batch_convert_to_csv(header)
+        self.convert_to_csv(directory[1],header)
 
-    def convert_to_csv(self, file_path, header):
+    def convert_to_csv(self, filename, header):
         """
         Converts a .docx file to .pdf
         :param file_path: path to the .docx file
         """
+        file_path = 'uploads/' + filename
         try:
             excelFile = pd.read_excel(file_path)
-            excelFile.to_csv(file_path.replace(".xlsx", ".tsv"), sep='\t', index=False, header=header)
+            outpath = 'converted/'+os.path.splitext(filename)[0]+'.tsv'           
+            excelFile.to_csv(outpath, sep='\t', index=False, header=header)
             print(f"Successfully converted {file_path} to PDF.")
         except Exception as e:
             print(f"Failed to convert {file_path} to PDF. Error: {e}")
