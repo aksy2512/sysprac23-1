@@ -34,7 +34,7 @@ const _maxFileMegaBytes = 200;
 var _dragDropCount = 0;
 
 
-function fListRowHTML(file) {
+function fListRowHTML(file, srctype) {
     let uid = uuidv4();
     let targettypes = getTargets(file.type);
     let options = targettypes.map(x => `<option value="${x}">${x}</option>`).join('');
@@ -42,6 +42,8 @@ function fListRowHTML(file) {
     let parentr = document.createElement('tr');
     parentr.innerHTML =  `
     <input type="file" class="d-none" name="file_${uid}" form="submissionform"/>
+    <input type="text" class="d-none" name="name_${uid}" value="${file.name}" form="submissionform"/>
+    <input type="text" class="d-none" name="srctype_${uid}" value="${srctype}" form="submissionform"/>
     <td>${file.name}</td>
     <td>
         <div class="btn-group">
@@ -164,7 +166,6 @@ function inspectFile(content, giventype) {
 }
 
 function fileAddedHandler(loadevent) {
-    console.log("aaaaaa");
     var rows = new DocumentFragment();
     Array.prototype.forEach.call(finput.files, function(file) {
         if (file.size > _maxFileMegaBytes*1024*1024) {
@@ -176,7 +177,7 @@ function fileAddedHandler(loadevent) {
                 if (getTargets(type).length === 0)
                     rows.appendChild(fListRowHTMLerr(file, "Unsupported / Corrupted Format"));
                 else
-                    rows.appendChild(fListRowHTML(file));
+                    rows.appendChild(fListRowHTML(file, type));
             }
             reader.readAsBinaryString(file.slice(0,20));
         }

@@ -33,15 +33,15 @@ To use TransformX, simply visit the web interface and select the file you want t
 
 ### Supported Conversions
 
-| From/To   | Image ^ | PDF | DOCX | MP3 | WAV | CSV | TSV |
-|-----------|-----------|-----|------|-----|-----|-----|-----|
-| Image ^ | ✔️         | ✔️   |      |     |     |     |     |
-| PDF       | ✔️         |     | ✔️    |     |     |     |     |
-| DOCX      |           | ✔️   |      |     |     |     |     |
-| MP3       |           | ✔️ *  |      |     | ✔️   |     |     |
-| WAV       |           | ✔️ *  |      | ✔️   |     |     |     |
-| XLSX      |           |     |      |     |     | ✔️   | ✔️   |
-| HTML      |           | ✔️   |      |     |     |     |     |
+| From/To | Image ^ | PDF | DOCX | MP3 | WAV | CSV | TSV |
+|---------|---------|-----|------|-----|-----|-----|-----|
+| Image ^ | ✔️       | ✔️   |      |     |     |     |     |
+| PDF     | ✔️       |     | ✔️    |     |     |     |     |
+| DOCX    |         | ✔️   |      |     |     |     |     |
+| MP3     |         | ✔️ * |      |     | ✔️   |     |     |
+| WAV     |         | ✔️ * |      | ✔️   |     |     |     |
+| XLSX    |         |     |      |     |     | ✔️   | ✔️   |
+| HTML    |         | ✔️   |      |     |     |     |     |
 
 > **\*** Using Speech Recognition
 > **^** Only Non-Raw Raster Formats
