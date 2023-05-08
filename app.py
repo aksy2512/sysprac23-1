@@ -23,6 +23,7 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 app = Flask(__name__)
 # sets max payload limit of 16MB
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -60,6 +61,7 @@ class User(db.Model):
 
 # only run once
 # with app.app_context():
+#     # os.remove("instance")
 #     db.create_all()
 
     # db.session.add(User('admin', 'admin@example.com'))
@@ -83,6 +85,7 @@ logging.basicConfig(level=logging.INFO,
 
 @app.route('/')
 def landing_page():
+    print("*"*100)
     users = User.query.all()
     print(users)
     """Home page. User can upload files from here"""
@@ -110,7 +113,6 @@ def upload_page():
         print(type(request.form), request.form.keys())
         print(type(request.files), request.files.keys())
         return render_template('landing.html')
-
         if 'formFile' not in request.files:
             flash('No file part')
             return render_template('landing.html')
@@ -203,4 +205,7 @@ def display_page():
 if __name__ == '__main__':
     # _cleanerprocess = threading.Thread(target=cleaner)
     # _cleanerprocess.start()
+    # Set the secret key to some random bytes. Keep this really secret!
+    app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+    app.config['SESSION_TYPE'] = 'filesystem'
     app.run(host='127.0.0.1', port=5000, debug=True)
