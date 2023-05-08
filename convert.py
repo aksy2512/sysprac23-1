@@ -1,6 +1,6 @@
 # importing all modules
-from DOCX_to_PDF import *
-from PDF_to_DOCX import *
+from API.DOCX_to_PDF import *
+from API.PDF_to_DOCX import *
 # from Audio_to_PDF import *
 # from Excel_to_CSV import *
 # from Excel_to_TSV import *
