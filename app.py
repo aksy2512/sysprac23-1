@@ -38,6 +38,27 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
+format_mapping = {
+    'JPG':'image/jpeg',
+    'PNG':'image/png', 
+    'GIF':'image/gif', 
+    'BMP':'image/bmp', 
+    'TIFF':'image/tiff', 
+    'ICO':'image/vnd.microsoft.icon', 
+    'ICNS':'image/x-icns',
+    'WEBP':'image/webp', 
+    'TGA':'image/targa', 
+    'PDF':'application/pdf',
+    'MP3':'audio/mpeg',
+    'WAV':'audio/wav',
+    'HTML':'text/html',
+    'DOCX':'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'XLSX':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'CSV':'text/csv',
+    'TSV':'text/tab-separated-values',
+}
+
+
 class User(db.Model):
     user_uuid = db.Column(db.Integer, primary_key=True)
     file_uuid = db.Column(db.Integer, primary_key=True)
@@ -59,10 +80,9 @@ class User(db.Model):
         print("-"*50)
         return f'File: {self.path}'
 
-# only run once
-# with app.app_context():
-#     # os.remove("instance")
-#     db.create_all()
+with app.app_context():
+    # os.remove("instance")
+    db.create_all()
 
     # db.session.add(User('admin', 'admin@example.com'))
     # db.session.add(User('guest', 'guest@example.com'))
@@ -92,6 +112,7 @@ def landing_page():
     return render_template('landing.html')
 
 def check_extension(file_path, ext):
+    return True
     file_types = {"pdf":"PDF","docx":"Word","xlsx":"XLSX"}
     mime = magic.Magic(mime=True)
     file_type = mime.from_file(file_path)
@@ -110,26 +131,48 @@ def check_extension(file_path, ext):
 def upload_page():
     if request.method == 'POST':
          # check if the post request has the file part
-        print(type(request.form), request.form.keys())
-        print(type(request.files), request.files.keys())
-        return render_template('landing.html')
-        if 'formFile' not in request.files:
+        # print(type(request.form), request.form.keys())
+        # print(type(request.files), request.files.keys())
+        # for k in request.form.keys():
+        #     print(k,"---",request.form[k])
+        # print("**"*10)
+        # for k in request.files.keys():
+        #     print(k,"---",request.files[k])
+
+        files = {}
+        for f in request.files.keys():
+            # extract name of file
+            filename = secure_filename(request.files[f].filename)
+            uuid_here = f.split("_")[1]
+            temp = {}
+            """ {file_storage :{srctype:{}, target:{}, name:{}}}"""
+            # getting src_type, target and name
+            for k in request.form.keys():
+                if k.split("_")[1] == uuid_here:
+                    temp[k.split("_")[0]] = request.form[k]
+            temp['uuid']=uuid_here
+            files[request.files[f]]=temp
+        # print("-"*20)
+        # for f in files.keys():
+        #     print("{} has uuid :{} name: {}, srctype: {}, targtetype: {}".format(f,files['uuid'],files[f]['name'],files[f]['srctype'],files[f]['target']))
+        # print("-"*20)
+        # return render_template('landing.html')
+    
+        if len(request.files) == 0:
             flash('No file part')
             return render_template('landing.html')
-        # else fetching the files
-        files = request.files.getlist('formFile')
-            
-        # target extension
-        originalExtension = request.form['fileType']
-        desiredExtension = request.form['targettype']
 
         # unique user id
         user_uuid=str(uuid.uuid1())
         # files_descp = []
 
-        for f in files:
+        for f in files.keys():
             # extract name of file
-            filename = secure_filename(f.filename)
+            filename = files[f]['name']
+            # target extension
+            originalExtension = [val for val in format_mapping.keys() if format_mapping[val]==files[f]['srctype']][0]
+            print(originalExtension)
+            desiredExtension = files[f]['target']
             # new name
             filename = filename.split(".")[0]+"_"+str(datetime.datetime.now()).replace(" ", "").replace(".","")+"."+filename.split(".")[1]
             # saving files locally
@@ -137,7 +180,7 @@ def upload_page():
             f.save(path)  
             if(check_extension(path, originalExtension)):  
                 print("Here")
-                id = str(uuid.uuid1())  # file id
+                id = str(files[f]['uuid'])  # file id
                 # [user_uuid,id,timestamp,desiredExtension]
                 obj = User(user_uuid=user_uuid,file_uuid=id,name=filename,desiredExtension=desiredExtension,originalExtension=originalExtension,path=path)
                 db.session.add(obj)
