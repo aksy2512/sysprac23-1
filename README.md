@@ -23,9 +23,9 @@ TransformX is a file conversion service that allows users to convert various fil
 7. Entrypoint : Run `python3 app.py`
 8. This will start a flask webserver on port 5000. You can open the website in your browser at `http://localhost:5000/`
 
-## Working with audio files:
-1. Install ffpmeg on your local system
-2. Use `sudo apt install ffmpeg` to install it on Ubuntu
+## Addition support for APIs:
+1. Install `ffpmeg` for Audio conversion. Use `sudo apt install ffmpeg` to install it on Ubuntu
+2. Install `wkhtmltopdf` for HTML conversion. Use `sudo apt-get install wkhtmltopdf` to install it on Ubuntu
 
 ## Docker
 1. sudo docker build -t sysprac .
