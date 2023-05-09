@@ -1,12 +1,12 @@
 # importing all modules
-# from API.DOCX_to_PDF import *
-# from API.PDF_to_DOCX import *
-# from API.Audio_to_PDF import *
-# from API.XLSX_to_CSV import *
-# from API.XLSX_to_TSV import *
-# from API.PDF_to_JPG import *
+from API.DOCX_to_PDF import *
+from API.PDF_to_DOCX import *
+from API.Audio_to_PDF import *
+from API.XLSX_to_CSV import *
+from API.XLSX_to_TSV import *
+from API.PDF_to_JPG import *
 from API.image_converter import *
-# from API.HTML_to_PDF import *
+from API.HTML_to_PDF import *
 from app import User, db
 import magic
 from multiprocessing import Pool,cpu_count
@@ -32,6 +32,7 @@ def convert(*file): # called inside starmap
         fn_call=fn + "("+str(file)+")"
         print("Running: ",fn_call)
         eval(fn_call)
+        db_file.converted_file_path="converted/"+file[1].split(".")[0]+"."+desiredExtension.lower()
         print("Competed processing {} format...".format(fn))
     except:
        # Handling of exception (if required)

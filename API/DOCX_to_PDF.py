@@ -3,6 +3,19 @@ import os
 import multiprocessing
 from docx2pdf import convert
 from app import User, db
+import sys
+import subprocess
+
+def generate_pdf(doc_path, path):
+
+    subprocess.call(['soffice',
+                 '--headless',
+                 '--convert-to',
+                 'pdf',
+                 '--outdir',
+                 path,
+                 doc_path])
+    return doc_path
 
 class DOCX_to_PDF:
     def __init__(self, files) -> None:
@@ -34,7 +47,11 @@ class DOCX_to_PDF:
             dest_path = os.path.join("converted",filename.split(".")[0]+self.dest_format)
             # print("Destination: ",dest_path)
             # now converting
-            convert(file_path,dest_path)
+            print(file_path,dest_path)
+            if(sys.platform=='linux'):
+                generate_pdf(file_path,"converted/")
+            else:
+                convert(file_path,dest_path)
             # updating the databse and saving file path
             # file.status = "Done"
             # file.converted_file_path = dest_path
