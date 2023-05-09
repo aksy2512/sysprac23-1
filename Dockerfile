@@ -8,7 +8,7 @@ RUN apk add build-base
 RUN apk add ffmpeg libreoffice-common poppler-utils
 RUN apk add --update py3-pip
 RUN apk add python3-dev py3-numpy py3-pandas
-
+RUN apk add wkhtmltopdf
 WORKDIR /app/
 
 RUN mkdir -p uploads/ converted/ instance/
