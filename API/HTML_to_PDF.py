@@ -2,7 +2,7 @@ import os
 import multiprocessing
 import pdfkit
 
-class HTML2PDF:
+class HTML_to_PDF:
     def __init__(self, directory: tuple) -> None:
         """
         Constructor function
