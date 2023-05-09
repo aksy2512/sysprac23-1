@@ -1,10 +1,12 @@
 from PIL import Image
 import os.path as op
+import time
 
 def convert_image(file):
     """
     file = (uuid, name, srctype, targettype)
     """
+    time.sleep(5)
     image = Image.open(f'uploads/{file[1]}', 'r')
     if image.mode != "RGBA" and file[3].lower() == "png":
         image = image.convert("RGBA")

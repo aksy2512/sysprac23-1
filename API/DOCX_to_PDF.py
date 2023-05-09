@@ -2,7 +2,6 @@
 import os
 import multiprocessing
 from docx2pdf import convert
-from app import User, db
 import sys
 import subprocess
 
@@ -44,7 +43,7 @@ class DOCX_to_PDF:
             # print(User.query.all())
             filename = self.files[1]
             file_path = os.path.join('uploads',filename)
-            dest_path = os.path.join("converted",filename.split(".")[0]+self.dest_format)
+            dest_path = os.path.join("converted",os.path.splitext(filename)[0]+self.dest_format)
             # print("Destination: ",dest_path)
             # now converting
             print(file_path,dest_path)

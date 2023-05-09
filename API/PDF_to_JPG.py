@@ -21,7 +21,7 @@ class PDF_to_JPG:
         try:
             images = convert_from_path(file_path)
             for i, image in enumerate(images):
-                outname = 'converted/'+filename.split('.')[0]
+                outname = 'converted/'+os.path.splitext(filename)[0]
                 image.save(f"{outname}_page_{i}.jpg", "JPG")
             print(f"Successfully converted {file_path} to PDF.")
         except Exception as e:
