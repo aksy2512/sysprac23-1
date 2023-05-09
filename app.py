@@ -124,9 +124,7 @@ def upload_page():
             # print(originalExtension)
             desiredExtension = files[f]['target']
             # new name
-            filename = os.path.splitext(filename)[0] + "_" + \
-                str(datetime.datetime.now()).replace(" ", "_").replace(".","_").replace(":","_") + \
-                str(files[f]['uuid']) + "." + originalExtension.lower()
+            filename = os.path.splitext(filename)[0] + "_" + str(files[f]['uuid']) + "." + originalExtension.lower()
             # saving files locally
             path =  os.path.join("uploads",filename)
             f.save(path)  
