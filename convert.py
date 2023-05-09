@@ -50,6 +50,8 @@ def convert(*file):
         fn="Audio_to_PDF"
     elif originalExtension in IMAGE_TYPES and desiredExtension in IMAGE_TYPES+['PDF']:
         fn="convert_image"
+    elif originalExtension=='PDF' and desiredExtension in IMAGE_TYPES:
+        fn="PDF_to_JPG"
     print(fn)
     
     db_file = dbcurs.execute(f'SELECT * FROM user WHERE file_uuid="{file[0]}"').fetchone()

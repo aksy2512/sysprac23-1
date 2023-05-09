@@ -10,20 +10,27 @@ class PDF_to_JPG:
         :param directory: list specifying the path (root folder) of these doc files
         """
         self.directory = directory
-        self.convert_to_image(directory[1])
+        self.convert_to_image(directory)
 
     def convert_to_image(self, filename):
         """
         Converts a .docx file to .pdf
         :param file_path: path to the .docx file
         """
-        file_path = 'uploads/' + filename
+        file_path = 'uploads/' + filename[1]
         try:
             images = convert_from_path(file_path)
             for i, image in enumerate(images):
-                outname = 'converted/'+os.path.splitext(filename)[0]
-                # converts only first page 
-                image.save(f"{outname}.jpg", "jpeg")
+                if image.mode != "RGBA" and filename[3].lower() == "png":
+                    image = image.convert("RGBA")
+                if image.mode != "RGB" and filename[3].lower() == "jpg":
+                    image = image.convert("RGB")
+                output_filename = os.path.splitext(filename[1])[0]+'.'+filename[3].lower()
+                print(filename, output_filename)
+                image.save(f'converted/{output_filename}')
+                # outname = 'converted/'+os.path.splitext(filename)[0]
+                # # converts only first page 
+                # image.save(f"{outname}.jpg", "jpeg")
             print(f"Successfully converted {file_path} to jpg.")
         finally : pass
 

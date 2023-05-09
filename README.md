@@ -34,6 +34,7 @@ TransformX is a file conversion service that allows users to convert various fil
 ## Addition support for APIs:
 1. Install `ffpmeg` for Audio conversion. Use `sudo apt install ffmpeg` to install it on Ubuntu
 2. Install `wkhtmltopdf` for HTML conversion. Use `sudo apt-get install wkhtmltopdf` to install it on Ubuntu
+3. Install `poppler` for PDF to Image conversion. Use `sudo apt-get install poppler-utils` to install it on Ubuntu
 
 ## Docker
 1. sudo docker build -t sysprac .

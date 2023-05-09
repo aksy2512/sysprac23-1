@@ -75,9 +75,9 @@ function fListRowHTML(file) {
     cont = `
     <td>${filename == "NaN" ? file.name : filename}</td>
     `;
-
+    
     if (file.status == 'Done') {
-        cont = cont + `<td style="margin:10px;"><i class="bi bi-check2-circle" style="color:#7CFC00; font-size:30px"></i></td>`;
+        cont = cont + `<td style="margin:10px;"><i class="bi bi-check2-circle" style="color:#6DDE00; font-size:30px"></i></td>`;
     } else if (file.status == "Pending") {
         cont = cont + `<td style="margin:10px;">
             <div class="spinner-grow spinner-grow-sm text-secondary" style="animation-delay: 0.0s;" role="status">
@@ -90,6 +90,8 @@ function fListRowHTML(file) {
                 <span class="sr-only"></span>
             </div>
         </td>`;
+    } else if (file.status == "Error") {
+        cont = cont + `<td style="margin:10px;"><i class="bi bi-exclamation-diamond" style="color:#FF2222; font-size:30px"></i></td>`
     } else {
         cont = cont + `<td><span></span></td>`;
     }
