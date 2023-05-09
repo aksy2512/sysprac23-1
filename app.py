@@ -285,4 +285,4 @@ if __name__ == '__main__':
     # Set the secret key to some random bytes. Keep this really secret!
     app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
     app.config['SESSION_TYPE'] = 'filesystem'
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

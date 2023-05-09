@@ -7,25 +7,21 @@ ENV HTTPS_PROXY "http://gateway.iitmandi.ac.in:8080"
 RUN apk add build-base
 RUN apk add ffmpeg
 RUN apk add --update py3-pip
-# RUN apk add python3-dev py3-numpy py3-pandas
-RUN apk add python3-dev
+RUN apk add python3-dev py3-numpy py3-pandas
 
 WORKDIR /app/
 
 RUN mkdir -p uploads/ converted/ instance/
-# RUN mkdir -p /app/{uploads,converted,instance}
 COPY API/* ./API/
 COPY static/* ./static/
 COPY templates/* ./templates/
 COPY *.py ./
 COPY requirements.txt ./
-# COPY hospital_data.sqlite ./
-# COPY templates/* ./templates/
-RUN pip install -r ./requirements.txt
-# RUN pip install --no-cache-dir -r ./requirements.txt
+RUN pip install --no-cache-dir -r ./requirements.txt
 
-ENV HTTP_PROXY ""
-ENV HTTPS_PROXY ""
+# No need unless proxy needs to be removed for some reasons
+# ENV HTTP_PROXY ""
+# ENV HTTPS_PROXY ""
 
-EXPOSE 5000
+EXPOSE 3000
 CMD ["python3","app.py"]
