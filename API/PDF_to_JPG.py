@@ -22,8 +22,9 @@ class PDF_to_JPG:
             images = convert_from_path(file_path)
             for i, image in enumerate(images):
                 outname = 'converted/'+os.path.splitext(filename)[0]
-                image.save(f"{outname}_page_{i}.jpg", "JPG")
-            print(f"Successfully converted {file_path} to PDF.")
+                # converts only first page 
+                image.save(f"{outname}.jpg", "jpeg")
+            print(f"Successfully converted {file_path} to jpg.")
         finally : pass
 
     def batch_convert_to_image(self):
