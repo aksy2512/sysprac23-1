@@ -12,6 +12,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from werkzeug.utils import secure_filename
 import json
+from flask_cors import CORS
 
 load_dotenv()
 PATHBASE = os.path.abspath(os.path.dirname(__file__))
@@ -22,6 +23,7 @@ if 'uploads' not in os.listdir():
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
+CORS(app)
 # sets max payload limit of 16MB
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 
@@ -200,7 +202,7 @@ def upload_page():
             else:
                 os.remove(path)
 
-        os.system('python convert.py')
+        os.system('python3 convert.py')
 
         return redirect(url_for('.display_page',user_uuid=user_uuid)) 
         # user is directed to /display and using AJAX, converted files are displayed
@@ -236,6 +238,7 @@ def status_check(id):
             'user_id': file.user_uuid,
             'file_id': file.file_uuid,
             'status': status,
+            'name': file.name,
             'message': message
         })
 
@@ -285,4 +288,4 @@ if __name__ == '__main__':
     # Set the secret key to some random bytes. Keep this really secret!
     app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
     app.config['SESSION_TYPE'] = 'filesystem'
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
