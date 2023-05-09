@@ -7,6 +7,8 @@ from API.XLSX_to_TSV import *
 from API.PDF_to_JPG import *
 from API.image_converter import *
 from API.HTML_to_PDF import *
+from API.MP3_to_WAV import *
+from API.WAV_to_MP3 import *
 from app import User, db
 import magic
 from multiprocessing import Pool,cpu_count
