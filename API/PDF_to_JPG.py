@@ -3,7 +3,7 @@ import multiprocessing
 from pdf2image import convert_from_path
 
 
-class PDF2IMAGE:
+class PDF_to_JPG:
     def __init__(self, directory: tuple) -> None:
         """
         Constructor function
@@ -17,12 +17,13 @@ class PDF2IMAGE:
         Converts a .docx file to .pdf
         :param file_path: path to the .docx file
         """
-        file_path = '../uploads/' + filename
+        file_path = 'uploads/' + filename
         try:
             images = convert_from_path(file_path)
             for i, image in enumerate(images):
-                filename = file_path.split('.')[0]
-                image.save(f"{filename}_page_{i}.jpg", "JPG")
+                outname = 'converted/'+filename.split('.')[0]
+                # filename = file_path.split('.')[0]
+                image.save(f"{outname}_page_{i}.jpg", "JPG")
             print(f"Successfully converted {file_path} to PDF.")
         except Exception as e:
             print(f"Failed to convert {file_path} to PDF. Error: {e}")

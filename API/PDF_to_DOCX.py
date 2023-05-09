@@ -5,7 +5,7 @@ import pdfplumber
 from docx import Document
 
 
-class PDF2DOCX:
+class PDF_to_DOCX:
     def __init__(self, directory: tuple) -> None:
         """
         Constructor function

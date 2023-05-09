@@ -6,7 +6,7 @@ from fpdf import FPDF
 from pydub import AudioSegment
 
 
-class AUD2PDF:
+class Audio_to_PDF:
     def __init__(self, directory: tuple) -> None:
         """
         Constructor function
@@ -30,7 +30,7 @@ class AUD2PDF:
                 aud = AudioSegment.from_file(file_path)
                 # export the AudioSegment object as a .wav file
                 print(out_path)
-                out_path= os.path.splitext(file_path)[0]+'wav' 
+                out_path= os.path.splitext(file_path)[0]+'.wav' 
                 aud.export(out_path, format="wav")
                 r = sr.Recognizer()
                 with sr.AudioFile(out_path) as source:

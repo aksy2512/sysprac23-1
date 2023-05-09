@@ -3,7 +3,7 @@ import multiprocessing
 import pandas as pd
 
 
-class EXCEL2TSV:
+class XLSX_to_TSV:
     def __init__(self, directory: tuple, header=True) -> None:
         """
         Constructor function

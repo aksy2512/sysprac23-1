@@ -4,7 +4,7 @@ import multiprocessing
 from pydub import AudioSegment
 
 
-class WAV2MP3:
+class WAV_to_MP3:
     def __init__(self, directory: str) -> None:
         """
         Constructor function
