@@ -251,7 +251,7 @@ def download_file(id):
     query = User.query.filter(User.file_uuid == id).first()
     if query:
         filename = f"{query.name.split('.')[0]}.{query.desiredExtension.lower()}"
-        return send_file('downloads/'+filename, as_attachment=True)
+        return send_file('converted/'+filename, as_attachment=True)
     else:
         return '', 404
 
