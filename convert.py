@@ -62,8 +62,7 @@ def convert(*file):
         cfpath = "converted/"+os.path.splitext(file[1])[0]+"."+desiredExtension.lower()
         dbcurs.execute(f"""UPDATE user SET converted_file_path="{cfpath}" WHERE file_uuid="{file[0]}"; """)
         print("Competed processing {} format...".format(fn))
-        del_loc='rm uploads/'+ str(file[1])
-        os.system(del_loc)
+        
     except:
        # Handling of exception (if required)
        print("Error occurred in", fn)
@@ -75,6 +74,8 @@ def convert(*file):
     else:
         # execute if no exception
         dbcurs.execute(f"""UPDATE user SET status="Done" WHERE file_uuid="{file[0]}"; """)
+        # del_loc='rm uploads/'+ str(file[1])
+        # os.system(del_loc)
     finally:
         # Some code .....(always executed)
         dbconn.commit()
