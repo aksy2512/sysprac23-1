@@ -113,13 +113,29 @@ function fListRowHTMLerr(file, err_msg) {
     content.append(parentr);
     return content;
 }
-
+function removeExt(ext,ar){
+    for(var i=0;i<ar.length;i++){
+        if(ar[i]==ext){
+        ar.splice(i,1);
+    }}
+    return ar;
+}
 
 function getTargets(mimetype) {
-    if (mimetype.slice(0,5) === 'image' && mimetype !== 'image/svg+xml') 
-        return ['JPG', 'PNG', 'GIF', 'BMP', 'TIFF', 'ICO', 'ICNS', 'WEBP', 'TGA', 'PDF'];
-    else if (mimetype === 'application/pdf') 
-        return ['DOCX', 'JPG', 'PNG', 'GIF', 'BMP', 'TIFF', 'ICO', 'ICNS', 'WEBP', 'TGA'];
+    if (mimetype.slice(0,5) === 'image' && mimetype !== 'image/svg+xml'){
+        var ext=mimetype.slice(6).toUpperCase();
+        if(ext=="JPEG") ext="JPG"
+        var ar=['JPG', 'PNG', 'GIF', 'BMP', 'TIFF', 'ICO', 'ICNS', 'WEBP', 'TGA', 'PDF'];
+        
+        return removeExt(ext,ar);
+    }
+
+    else if (mimetype === 'application/pdf'){
+        var ext=mimetype.slice(6).toUpperCase();
+        if(ext=="JPEG") ext="JPG"
+        var ar=['DOCX', 'JPG', 'PNG', 'GIF', 'BMP', 'TIFF', 'ICO', 'ICNS', 'WEBP', 'TGA'];
+        return removeExt(ext,ar);
+    }
     else if (mimetype === 'audio/mpeg') return ['WAV', 'PDF'];
     else if (mimetype === 'audio/wav') return ['MP3', 'PDF'];
     else if (mimetype === 'text/html') return ['PDF'];
