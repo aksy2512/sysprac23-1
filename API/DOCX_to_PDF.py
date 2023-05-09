@@ -59,9 +59,7 @@ class DOCX_to_PDF:
             # print("After")
             # print(User.query.all())
             print(f"Successfully converted {file_path} to PDF.")
-        except Exception as e:
-            print(e)
-            print(f"Failed to convert {file_path} to PDF. Error: {e}")
+        finally : pass
 
     def batch_convert_to_pdf(self):
         """

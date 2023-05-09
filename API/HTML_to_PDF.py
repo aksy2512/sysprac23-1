@@ -23,8 +23,8 @@ class HTML_to_PDF:
             # print(outfile_path)
             pdfkit.from_file(file_path, outfile_path)
             print(f"Successfully converted {file_path} to PDF.")
-        except Exception as e:
-            print(f"Failed to convert {file_path} to PDF. Error: {e}")
+        
+        finally: pass
 
     def batch_convert_to_pdf(self):
         """

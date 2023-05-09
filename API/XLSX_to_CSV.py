@@ -23,8 +23,7 @@ class XLSX_to_CSV:
             outpath = 'converted/'+os.path.splitext(filename)[0]+'.csv'
             excelFile.to_csv(outpath, index=None, header=header)
             print(f"Successfully converted {file_path} to PDF.")
-        except Exception as e:
-            print(f"Failed to convert {file_path} to PDF. Error: {e}")
+        finally : pass
 
     def batch_convert_to_csv(self, header=True):
         """

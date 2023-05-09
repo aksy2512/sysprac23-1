@@ -5,7 +5,7 @@ console.log(user_uuid);
 function ajax_call() {
     let fileStatusList;
     const xhr = new XMLHttpRequest();
-    const url = `http://127.0.0.1:5000/status/${user_uuid}`;
+    const url = `/status/${user_uuid}`;
     xhr.open('GET', url, false);
 
     xhr.onreadystatechange = function () {
@@ -47,7 +47,7 @@ window.addEventListener('load', function (e) {
     if (!user_uuid) {
         // user_uuid is not present
         // redirecting to home page
-        window.location.replace("http://127.0.0.1:5000/")
+        window.location.replace("/")
     }
     const interval = this.window.setInterval(() => {
         fileStatus = ajax_call();
@@ -131,7 +131,7 @@ function fileAddedHandler(fileStatus) {
             id = event.target.id;
             filename = event.target.dataset.filename;
             filename = (filename.split("/"))[filename.split("/").length - 1]
-            downloadFile(`http://127.0.0.1:5000/download/${id}`, filename);
+            downloadFile(`/download/${id}`, filename);
         }
     }
     fList.appendChild(rows);

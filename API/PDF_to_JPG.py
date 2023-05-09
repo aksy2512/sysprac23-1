@@ -24,8 +24,7 @@ class PDF_to_JPG:
                 outname = 'converted/'+os.path.splitext(filename)[0]
                 image.save(f"{outname}_page_{i}.jpg", "JPG")
             print(f"Successfully converted {file_path} to PDF.")
-        except Exception as e:
-            print(f"Failed to convert {file_path} to PDF. Error: {e}")
+        finally : pass
 
     def batch_convert_to_image(self):
         """

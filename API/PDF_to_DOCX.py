@@ -42,9 +42,7 @@ class PDF_to_DOCX:
 
                 print(f"Successfully converted {file_path} to DOCX.")
         
-        except Exception as e:
-
-            print(f"Failed to convert {file_path} to DOCX. Error: {e}")
+        finally : pass
 
     def batch_convert_to_docx(self):
         """

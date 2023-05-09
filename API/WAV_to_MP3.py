@@ -27,8 +27,7 @@ class WAV_to_MP3:
                 aud.export(out_path, format="mp3")
 
 
-        except Exception as e:
-            print(f"Failed to convert {file_path} to mp3. Error: {e}")
+        finally : pass
 
     def batch_convert_to_mp3(self):
         """

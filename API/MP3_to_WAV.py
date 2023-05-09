@@ -26,9 +26,7 @@ class MP3_to_WAV:
                 out_path = 'converted/'+os.path.splitext(filename)[0] + ".wav"
                 aud.export(out_path, format="wav")
 
-
-        except Exception as e:
-            print(f"Failed to convert {file_path} to wav. Error: {e}")
+        finally : pass
 
     def batch_convert_to_wav(self):
         """
