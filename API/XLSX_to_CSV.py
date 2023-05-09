@@ -3,7 +3,7 @@ import multiprocessing
 import pandas as pd
 
 
-class XLSX_TO_CSV:
+class XLSX_to_CSV:
     def __init__(self, directory: tuple, header=True) -> None:
         """
         Constructor function
