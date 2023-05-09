@@ -4,6 +4,14 @@
 
 TransformX is a file conversion service that allows users to convert various file types to different formats. This service supports a wide range of file formats, including document files, image files, audio files, and video files.
 
+## Team Details
+1. [Yash Sharma](https://github.com/yashcode00)
+2. [Vinayak Sachan](https://github.com/metavinayak)
+3. [Akshar Singh](https://github.com/aksy2512)
+4. [Gautam Dhulipala](https://github.com/gd-codes)
+5. [Ashutosh Sharma](https://github.com/ashu3103)
+6. [Shashwat Sharma](https://github.com/shashwat-1-11)
+
 ## Features
 
 - User-friendly web interface for uploading and converting files
@@ -32,7 +40,7 @@ TransformX is a file conversion service that allows users to convert various fil
 2. sudo docker run -p 5000:5000 sysprac
 3. open `http://localhost:5000/`
 ## docker-compose.yml
-1. sudo docker compose up
+1. sudo docker compose up --build
 ## Usage
 
 To use TransformX, simply visit the web interface and select the file you want to convert. Choose the desired output format and click the convert button. The converted file will be available for download within a few minutes. If you prefer to use the API, you can integrate TransformX with your application using the provided API documentation.
