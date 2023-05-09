@@ -204,7 +204,7 @@ def upload_page():
                 os.remove(path)
 
         # subprocess.Popen([sys.executable, 'convert.py'],shell=True)
-        os.system('python convert.py')
+        os.system('python3 convert.py')
 
         return redirect(url_for('.display_page',user_uuid=user_uuid)) 
         # user is directed to /display and using AJAX, converted files are displayed
@@ -241,7 +241,8 @@ def status_check(id):
             'file_id': file.file_uuid,
             'status': status,
             'name': file.name,
-            'message': message
+            'message': message,
+            'converted_path': file.converted_file_path
         })
 
     return jsonify(response)

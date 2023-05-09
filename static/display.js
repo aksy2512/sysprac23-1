@@ -75,7 +75,7 @@ function fListRowHTML(file){
     <td>${file.status}</td>
     `;
     if(file.status == 'Done'){
-        cont = cont + `<td><span id=${file.file_id} class="btn btn-info downloadbtn" data-filename=${file.name}>Download</span></td>`;
+        cont = cont + `<td><span id=${file.file_id} class="btn btn-info downloadbtn" data-filename=${file.converted_path}>Download</span></td>`;
     }else{
         cont = cont + `<td><span> -- </span></td>`
     }
@@ -110,6 +110,7 @@ function fileAddedHandler(fileStatus){
         downloadbtn.onclick = (event) => {
             id = event.target.id;
             filename = event.target.dataset.filename;
+            filename = (filename.split("/"))[filename.split("/").length - 1]
             downloadFile(`http://localhost:5000/download/${id}`, filename);
         }
     }
