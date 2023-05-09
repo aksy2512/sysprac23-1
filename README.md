@@ -31,6 +31,8 @@ TransformX is a file conversion service that allows users to convert various fil
 1. sudo docker build -t sysprac .
 2. sudo docker run -p 5000:5000 sysprac
 3. open `http://localhost:5000/`
+## docker-compose.yml
+1. sudo docker compose up
 ## Usage
 
 To use TransformX, simply visit the web interface and select the file you want to convert. Choose the desired output format and click the convert button. The converted file will be available for download within a few minutes. If you prefer to use the API, you can integrate TransformX with your application using the provided API documentation.
