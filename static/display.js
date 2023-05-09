@@ -70,8 +70,10 @@ window.addEventListener('load', function(e){
 function fListRowHTML(file){
     let content = new DocumentFragment();
     let parentr = document.createElement('tr');
+    let filename = file.converted_path
+    filename = (filename.split("/"))[filename.split("/").length - 1]
     cont =  `
-    <td>${file.name}</td>
+    <td>${filename}</td>
     <td>${file.status}</td>
     `;
     if(file.status == 'Done'){

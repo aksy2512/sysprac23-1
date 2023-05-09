@@ -29,7 +29,7 @@ class Audio_to_PDF:
                 # create an AudioSegment object from the input file
                 aud = AudioSegment.from_file(file_path)
                 # export the AudioSegment object as a .wav file
-                print(out_path)
+                # print(out_path)
                 out_path= os.path.splitext(file_path)[0]+'.wav' 
                 aud.export(out_path, format="wav")
                 r = sr.Recognizer()
