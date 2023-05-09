@@ -203,7 +203,8 @@ def upload_page():
             else:
                 os.remove(path)
 
-        subprocess.Popen([sys.executable, 'convert.py'],shell=True)
+        # subprocess.Popen([sys.executable, 'convert.py'],shell=True)
+        os.system('python convert.py')
 
         return redirect(url_for('.display_page',user_uuid=user_uuid)) 
         # user is directed to /display and using AJAX, converted files are displayed
