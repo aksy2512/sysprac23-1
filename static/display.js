@@ -30,13 +30,12 @@ window.addEventListener('load', function(e){
                 break;
             }
         }
+        fileAddedHandler(fileStatus);
+        
         if(flag){
             // All files are processed
-            fileAddedHandler(fileStatus);
             break;
         }
-        // if any file status is pending
-        fileAddedHandler(fileStatus);
     }
 });
 

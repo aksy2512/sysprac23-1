@@ -1,12 +1,12 @@
 from PIL import Image
 
-def convert_image(input_filename, to_format):
-    image = Image.open(input_filename)
-    if image.mode != "RGBA" and to_format == "png":
+def convert_image(file):
+    image = Image.open(f'uploads/{file[1]}', 'r')
+    if image.mode != "RGBA" and file[3] == "png":
         image = image.convert("RGBA")
 
-    output_filename = f"{input_filename.split('.')[0]}.{to_format}"
+    output_filename = f"{file[1].split('.')[0]}.{file[3]}"
 
-    image.save(output_filename, to_format)
+    image.save(output_filename, file[3])
 
     print(f"Image converted and saved as {output_filename}")
