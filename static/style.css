@@ -4,7 +4,8 @@
 #pageHeader {
     min-height: 40%;
     color: white;
-    background-color: rgb(40,20,20);
+    opacity: 0.85;
+    background-color: rgb(5, 104, 244);
     font-family: 'Tomorrow', sans-serif;
     padding: 40px;
 }
