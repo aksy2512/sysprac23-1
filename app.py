@@ -200,7 +200,7 @@ def upload_page():
             else:
                 os.remove(path)
 
-        os.system('python convert.py')
+        os.system('python3 convert.py')
 
         return redirect(url_for('.display_page',user_uuid=user_uuid)) 
         # user is directed to /display and using AJAX, converted files are displayed

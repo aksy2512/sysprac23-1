@@ -27,6 +27,8 @@ TransformX is a file conversion service that allows users to convert various fil
 1. Install ffpmeg on your local system
 2. Use `sudo apt install ffmpeg` to install it on Ubuntu
 
+## Docker
+1. sudo docker build -t sysprac .
 ## Usage
 
 To use TransformX, simply visit the web interface and select the file you want to convert. Choose the desired output format and click the convert button. The converted file will be available for download within a few minutes. If you prefer to use the API, you can integrate TransformX with your application using the provided API documentation.
