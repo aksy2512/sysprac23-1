@@ -1,4 +1,4 @@
-from flask import Flask, flash, jsonify, request, redirect, url_for, redirect, render_template
+from flask import Flask, flash, jsonify, request, redirect, url_for, redirect, render_template, send_from_directory
 from dotenv import load_dotenv
 import os
 import shutil
@@ -243,6 +243,16 @@ def status_check(id):
         })
 
     return jsonify(response)
+
+@app.route('/download/<id>')
+def download_file(id):
+    """Download the converted file."""
+    print("download link")
+    query = User.query.filter(User.file_uuid == id).first()
+    if query:
+        return send_from_directory('downloads', query.name)
+    else:
+        return '', 404
 
     # if os.path.isdir(os.path.join(PATHBASE, 'uploads', id)):
     #     for row in fileparsers.DATA:

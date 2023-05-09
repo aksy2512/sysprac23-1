@@ -20,6 +20,26 @@ function ajax_call(){
     return JSON.parse(fileStatusList);
 }
 
+function downloadFile(url, filename) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.responseType = 'blob';
+    xhr.onload = function(){
+        if (xhr.status === 200){
+            var blob = new Blob([xhr.response], {type: 'application/octet-stream'});
+            var url = URL.createObjectURL(blob);
+            var link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+    };
+    xhr.send();
+}
+
 var fList, contentDiv;
 window.addEventListener('load', function(e){
     // capturing the required DOM elements
@@ -42,7 +62,7 @@ window.addEventListener('load', function(e){
             }
         }
         fileAddedHandler(fileStatus);
-        // break;
+
         if(!flag){
             // All files are processed
             break;
@@ -58,16 +78,12 @@ function fListRowHTML(file){
     <td>${file.status}</td>
     `;
     if(file.status == 'Done'){
-        cont = cont + `<td><span class="btn btn-danger downloadbtn"><i class="bi bi-trash3-fill"></i></span></td>`;
+        cont = cont + `<td><span id=${file.file_id} class="btn btn-info downloadbtn">Download</span></td>`;
     }else{
         cont = cont + `<td><span> -- </span></td>`
     }
     parentr.innerHTML = cont;
     content.append(parentr);
-    // let fi = content.querySelector(`input[name="file_${uid}"]`);
-    // let datr = new DataTransfer();
-    // datr.items.add(file);
-    // fi.files = datr.files;
     return content;
 }
 
@@ -93,23 +109,11 @@ function fileAddedHandler(fileStatus){
         rows.appendChild(fListRowHTML(fileStatus[i]))
     }
 
-    // Array.prototype.forEach.call(finput.files, function(file) {
-    //     if (file.size > _maxFileMegaBytes*1024*1024) {
-    //         rows.appendChild(fListRowHTMLerr(file, "File Corrupted"));
-    //     } else {
-    //         var reader = new FileReader();
-    //         reader.onloadend = () => { 
-    //             let type = inspectFile(reader.result, file.type);
-    //             if (getTargets(type).length === 0)
-    //                 rows.appendChild(fListRowHTMLerr(file, "Unsupported / Corrupted Format"));
-    //             else
-    //                 rows.appendChild(fListRowHTML(file, type));
-    //         }
-    //         reader.readAsBinaryString(file.slice(0,20));
-    //     }
-    // })
     for (let downloadbtn of rows.querySelectorAll('.downloadbtn')) {
-        downloadbtn.onclick = (event) => {event.target.closest('tr').remove()}
+        downloadbtn.onclick = (event) => {
+            id = event.target.id;
+            downloadFile(`http://localhost:5000/download/${id}`, id);
+        }
     }
     fList.appendChild(rows);
 }
