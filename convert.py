@@ -12,7 +12,10 @@ from API.WAV_to_MP3 import *
 from app import User, db
 import magic
 from multiprocessing import Pool,cpu_count
+import sys, traceback
 
+AUDIO_TYPES = ['MP3', 'WAV']
+IMAGE_TYPES = ['JPG', 'PNG', 'GIF', 'BMP', 'TIFF', 'ICO', 'ICNS', 'WEBP', 'TGA']
 
 def convert(*file): # called inside starmap
     print(file)
@@ -21,9 +24,9 @@ def convert(*file): # called inside starmap
     desiredExtension=file[3]
 
     fn=originalExtension+"_to_"+desiredExtension
-    if(fn=="WAV_to_PDF" or fn=="MP3_to_PDF"):
+    if originalExtension in AUDIO_TYPES and desiredExtension=='PDF':
         fn="Audio_to_PDF"
-    if(fn=="PNG_to_JPG" or fn=="JPG_to_PNG"):
+    elif originalExtension in IMAGE_TYPES and desiredExtension in IMAGE_TYPES+['PDF']:
         fn="convert_image"
     print(fn)
     
@@ -39,6 +42,10 @@ def convert(*file): # called inside starmap
     except:
        # Handling of exception (if required)
        print("Error occurred in", fn)
+       errlog = []
+       for line in traceback.format_exception(*sys.exc_info()):
+            errlog.extend(line.rstrip('\n').split('\n'))
+       sys.stderr.write("".join(['|\t'+l+'\n' for l in errlog])+'-'*40+'\n')
        db_file.status = "Error"
     else:
         # execute if no exception
