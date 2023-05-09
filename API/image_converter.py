@@ -7,6 +7,6 @@ def convert_image(file):
 
     output_filename = f"{file[1].split('.')[0]}.{file[3]}"
 
-    image.save(output_filename, file[3])
+    image.save(f'downloads/{output_filename}', file[3])
 
     print(f"Image converted and saved as {output_filename}")

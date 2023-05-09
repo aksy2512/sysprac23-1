@@ -1,12 +1,12 @@
 # importing all modules
-from API.DOCX_to_PDF import *
-from API.PDF_to_DOCX import *
-from API.Audio_to_PDF import *
-from API.XLSX_to_CSV import *
-from API.XLSX_to_TSV import *
-from API.PDF_to_JPG import *
+# from API.DOCX_to_PDF import *
+# from API.PDF_to_DOCX import *
+# from API.Audio_to_PDF import *
+# from API.XLSX_to_CSV import *
+# from API.XLSX_to_TSV import *
+# from API.PDF_to_JPG import *
 from API.image_converter import *
-from API.HTML_to_PDF import *
+# from API.HTML_to_PDF import *
 from app import User, db
 import magic
 from multiprocessing import Pool,cpu_count
@@ -21,6 +21,8 @@ def convert(*file): # called inside starmap
     fn=originalExtension+"_to_"+desiredExtension
     if(fn=="WAV_to_PDF" or fn=="MP3_to_PDF"):
         fn="Audio_to_PDF"
+    if(fn=="PNG_to_JPG" or fn=="JPG_to_PNG"):
+        fn="convert_image"
     print(fn)
     
     db_file = User.query.filter(User.file_uuid == file[0]).first()

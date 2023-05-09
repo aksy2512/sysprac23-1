@@ -1,18 +1,23 @@
-console.log('{{user_uuid}}');
-var user_uuid = '{{user_uuid}}';
+const urlParams = new URLSearchParams(window.location.search);
+const user_uuid = urlParams.get('user_uuid');
+console.log(user_uuid);
 
 function ajax_call(){
+    let fileStatusList;
     const xhr = new XMLHttpRequest();
-    const url = `http://127.0.0.1:5000/status/${user_uuid}`;
-    xhr.open('GET', url, true);
+    const url = `http://localhost:5000/status/${user_uuid}`;
+    xhr.open('GET', url, false);
 
     xhr.onreadystatechange = function () {
         if(this.readyState == 4 && this.status == 200){
             console.log(this.responseText);
-            return this.responseText;
+            fileStatusList = this.responseText;
+        }else{
+            return undefined;
         }
     }
     xhr.send();
+    return JSON.parse(fileStatusList);
 }
 
 var fList, contentDiv;
@@ -20,19 +25,25 @@ window.addEventListener('load', function(e){
     // capturing the required DOM elements
     fList = document.getElementById('convertedFiles');
     contentDiv = document.getElementById('downloadContainer');
-    while(True){
+    if(!user_uuid){
+        // user_uuid is not present
+        // redirecting to home page
+        window.location.replace("http://localhost:5000/")
+    }
+    while(true){
         // making ajax calls
         fileStatus = ajax_call();
-        let flag = true;
+        console.log(fileStatus);
+        let flag = false;
         for(let i=0;i<fileStatus.length;i++){
-            if(fileStatus[i]?.status !== "Pending"){
-                flag = false;
+            if(fileStatus[i]?.status === "Pending"){
+                flag = true;
                 break;
             }
         }
         fileAddedHandler(fileStatus);
-        
-        if(flag){
+        // break;
+        if(!flag){
             // All files are processed
             break;
         }
@@ -49,7 +60,7 @@ function fListRowHTML(file){
     if(file.status == 'Done'){
         cont = cont + `<td><span class="btn btn-danger downloadbtn"><i class="bi bi-trash3-fill"></i></span></td>`;
     }else{
-        cont = cont + `<td><span class="btn btn-danger downloadbtn">--</span></td>`
+        cont = cont + `<td><span> -- </span></td>`
     }
     parentr.innerHTML = cont;
     content.append(parentr);
@@ -76,7 +87,7 @@ function fListRowHTMLerr(file, err_msg) {
 }
 
 function fileAddedHandler(fileStatus){
-
+    fList.innerHTML = null;
     var rows = new DocumentFragment();
     for(let i=0;i<fileStatus.length;i++){
         rows.appendChild(fListRowHTML(fileStatus[i]))

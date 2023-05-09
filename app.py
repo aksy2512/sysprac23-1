@@ -12,6 +12,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from werkzeug.utils import secure_filename
 import json
+from flask_cors import CORS
 
 load_dotenv()
 PATHBASE = os.path.abspath(os.path.dirname(__file__))
@@ -22,6 +23,7 @@ if 'uploads' not in os.listdir():
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
+CORS(app)
 # sets max payload limit of 16MB
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 
@@ -236,6 +238,7 @@ def status_check(id):
             'user_id': file.user_uuid,
             'file_id': file.file_uuid,
             'status': status,
+            'name': file.name,
             'message': message
         })
 
