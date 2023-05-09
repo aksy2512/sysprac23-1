@@ -39,6 +39,8 @@ def convert(*file): # called inside starmap
         eval(fn_call)
         db_file.converted_file_path="converted/"+file[1].split(".")[0]+"."+desiredExtension.lower()
         print("Competed processing {} format...".format(fn))
+        del_loc='rm uploads/'+ str(file[1])
+        os.system(del_loc)
     except:
        # Handling of exception (if required)
        print("Error occurred in", fn)
