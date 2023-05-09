@@ -72,9 +72,9 @@ if __name__ == '__main__':
     print("Inside convert.py")
     #########################################################
     # Testing on same files by changing their status from Error/Done to Pending
-    result_data = {'status': 'Pending'}
-    User.query.filter_by().update(result_data)
-    db.session.commit()
+    # result_data = {'status': 'Pending'}
+    # User.query.filter_by().update(result_data)
+    # db.session.commit()
     # print(User.query.all())
     #########################################################
 

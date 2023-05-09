@@ -72,6 +72,6 @@ class DOCX_to_PDF:
         if not os.path.exists(dir_path):
             print(f"Directory path {dir_path} does not exist.")
             return
-        if self.files[1].endswith(".docx"):
-            self.convert_to_pdf()
+        # if self.files[1].endswith(".docx"):
+        self.convert_to_pdf()
 
