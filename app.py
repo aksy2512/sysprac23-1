@@ -1,4 +1,4 @@
-from flask import Flask, flash, jsonify, request, redirect, url_for, redirect, render_template, send_from_directory
+from flask import Flask, flash, jsonify, request,send_file, redirect, url_for, redirect, render_template, send_from_directory
 from dotenv import load_dotenv
 import os
 import shutil
@@ -187,7 +187,7 @@ def upload_page():
             # print(originalExtension)
             desiredExtension = files[f]['target']
             # new name
-            filename = filename.split(".")[0]+"_"+str(datetime.datetime.now()).replace(" ", "_").replace(".","_").replace(":","_")+str(files[f]['uuid'])+"."+filename.split(".")[1]
+            filename = filename.split(".")[0]+"_"+str(datetime.datetime.now()).replace(" ", "_").replace(".","_").replace(":","_")+str(files[f]['uuid'])+"."+desiredExtension.lower()
             # saving files locally
             path =  os.path.join("uploads",filename)
             f.save(path)  
@@ -250,9 +250,11 @@ def download_file(id):
     print("download link")
     query = User.query.filter(User.file_uuid == id).first()
     if query:
-        return send_from_directory('downloads', query.name)
+        filename = f"{query.name.split('.')[0]}.{query.desiredExtension.lower()}"
+        return send_file('downloads/'+filename, as_attachment=True)
     else:
         return '', 404
+
 
     # if os.path.isdir(os.path.join(PATHBASE, 'uploads', id)):
     #     for row in fileparsers.DATA:

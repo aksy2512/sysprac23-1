@@ -10,7 +10,6 @@ function ajax_call(){
 
     xhr.onreadystatechange = function () {
         if(this.readyState == 4 && this.status == 200){
-            console.log(this.responseText);
             fileStatusList = this.responseText;
         }else{
             return undefined;
@@ -53,7 +52,6 @@ window.addEventListener('load', function(e){
     while(true){
         // making ajax calls
         fileStatus = ajax_call();
-        console.log(fileStatus);
         let flag = false;
         for(let i=0;i<fileStatus.length;i++){
             if(fileStatus[i]?.status === "Pending"){
@@ -78,7 +76,7 @@ function fListRowHTML(file){
     <td>${file.status}</td>
     `;
     if(file.status == 'Done'){
-        cont = cont + `<td><span id=${file.file_id} class="btn btn-info downloadbtn">Download</span></td>`;
+        cont = cont + `<td><span id=${file.file_id} class="btn btn-info downloadbtn" data-filename=${file.name}>Download</span></td>`;
     }else{
         cont = cont + `<td><span> -- </span></td>`
     }
@@ -112,7 +110,8 @@ function fileAddedHandler(fileStatus){
     for (let downloadbtn of rows.querySelectorAll('.downloadbtn')) {
         downloadbtn.onclick = (event) => {
             id = event.target.id;
-            downloadFile(`http://localhost:5000/download/${id}`, id);
+            filename = event.target.dataset.filename;
+            downloadFile(`http://localhost:5000/download/${id}`, filename);
         }
     }
     fList.appendChild(rows);
