@@ -11,10 +11,8 @@ Pillow==9.5.0
 pydub==0.25.1
 python-dotenv
 python_docx==0.8.11
-python_magic==0.4.27
 SpeechRecognition
 SQLAlchemy==2.0.12
 Werkzeug
 pyOpenSSL==23.1.1
-python_magic==0.4.27
 Flask-Cors==3.0.10
