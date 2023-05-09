@@ -4,8 +4,8 @@ import multiprocessing
 from docx2pdf import convert
 from app import User, db
 
-class DOCX2PDF:
-    def __init__(self, files: list) -> None:
+class DOCX_to_PDF:
+    def __init__(self, files) -> None:
         """
         Constructor function
         :param directory: list specifying the path (root folder) of these doc files
@@ -15,31 +15,33 @@ class DOCX2PDF:
         self.dest_format = ".pdf"
         self.batch_convert_to_pdf()
 
-    def convert_to_pdf(self, f):
+
+    def convert_to_pdf(self):
         """
         Converts a .docx file to .pdf
         :param file_path: path to the .docx file
         """
         try:
-            file = User.query.filter(User.file_uuid == f.file_uuid).first()
-            # mark status as active
-            file.status = "Active"
-            db.session.commit()
-            print("*"*100)
-            print("Before")
-            print(User.query.all())
-            file_path = f.path
-            dest_path = os.path.join("converted",file.name.split(".")[0]+self.dest_format)
-            print(dest_path)
+            # file = User.query.filter(User.file_uuid == f.file_uuid).first()
+            # # mark status as active
+            # file.status = "Active"
+            # db.session.commit()
+            # print("*"*100)
+            # print("Before")
+            # print(User.query.all())
+            filename = self.files[1]
+            file_path = os.path.join('uploads',filename)
+            dest_path = os.path.join("converted",filename.split(".")[0]+self.dest_format)
+            # print("Destination: ",dest_path)
             # now converting
             convert(file_path,dest_path)
             # updating the databse and saving file path
-            file.status = "Done"
-            file.converted_file_path = dest_path
-            db.session.commit()
-            print("*"*20)
-            print("After")
-            print(User.query.all())
+            # file.status = "Done"
+            # file.converted_file_path = dest_path
+            # db.session.commit()
+            # print("*"*20)
+            # print("After")
+            # print(User.query.all())
             print(f"Successfully converted {file_path} to PDF.")
         except Exception as e:
             print(e)
@@ -53,11 +55,6 @@ class DOCX2PDF:
         if not os.path.exists(dir_path):
             print(f"Directory path {dir_path} does not exist.")
             return
-
-        pool = multiprocessing.Pool()
-        for f in self.files:
-            if f.name.endswith(".docx"):
-                pool.apply_async(self.convert_to_pdf, args=(f,))
-        pool.close()
-        pool.join()
+        if self.files[1].endswith(".docx"):
+            self.convert_to_pdf()
 

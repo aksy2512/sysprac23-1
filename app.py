@@ -182,15 +182,15 @@ def upload_page():
             filename = files[f]['name']
             # target extension
             originalExtension = [val for val in format_mapping.keys() if val==files[f]['srctype']][0]
-            print(originalExtension)
+            # print(originalExtension)
             desiredExtension = files[f]['target']
             # new name
-            filename = filename.split(".")[0]+"_"+str(datetime.datetime.now()).replace(" ", "").replace(".","")+"."+filename.split(".")[1]
+            filename = filename.split(".")[0]+"_"+str(datetime.datetime.now()).replace(" ", "_").replace(".","_").replace(":","_")+str(files[f]['uuid'])+"."+filename.split(".")[1]
             # saving files locally
             path =  os.path.join("uploads",filename)
             f.save(path)  
             if(check_extension(path, originalExtension.lower())):  
-                print("Here")
+                # print("Here")
                 id = str(files[f]['uuid'])  # file id
                 # [user_uuid,id,timestamp,desiredExtension]
                 obj = User(user_uuid=user_uuid,file_uuid=id,name=filename,desiredExtension=desiredExtension,originalExtension=originalExtension,path=path)
