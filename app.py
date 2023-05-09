@@ -1,6 +1,7 @@
 from flask import Flask, flash, jsonify, request,send_file, redirect, url_for, redirect, render_template, send_from_directory
 from dotenv import load_dotenv
-import os
+import os, sys
+import subprocess
 import shutil
 import datetime
 import threading
@@ -202,7 +203,7 @@ def upload_page():
             else:
                 os.remove(path)
 
-        os.system('python3 convert.py')
+        subprocess.Popen([sys.executable, 'convert.py'],shell=True)
 
         return redirect(url_for('.display_page',user_uuid=user_uuid)) 
         # user is directed to /display and using AJAX, converted files are displayed
