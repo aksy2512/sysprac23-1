@@ -122,6 +122,7 @@ function getTargets(mimetype) {
         return ['DOCX', 'JPG', 'PNG', 'GIF', 'BMP', 'TIFF', 'ICO', 'ICNS', 'WEBP', 'TGA'];
     else if (mimetype === 'audio/mpeg') return ['WAV', 'PDF'];
     else if (mimetype === 'audio/wav') return ['MP3', 'PDF'];
+    else if (mimetype === 'text/html') return ['PDF'];
     else if (mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') return ['PDF'];
     else if (mimetype === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') return ['CSV', 'TSV'];
     else return [];
