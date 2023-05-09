@@ -49,8 +49,7 @@ window.addEventListener('load', function(e){
         // redirecting to home page
         window.location.replace("http://localhost:5000/")
     }
-    while(true){
-        // making ajax calls
+    const interval = this.window.setInterval(() => {
         fileStatus = ajax_call();
         let flag = false;
         for(let i=0;i<fileStatus.length;i++){
@@ -63,9 +62,9 @@ window.addEventListener('load', function(e){
 
         if(!flag){
             // All files are processed
-            break;
+            this.window.clearInterval(interval);
         }
-    }
+    }, 500);
 });
 
 function fListRowHTML(file){
