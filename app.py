@@ -52,11 +52,11 @@ except sqlite3.OperationalError :
     dbcurs = dbconn.cursor()
     dbcurs.execute("""
 CREATE TABLE user (
-        user_uuid INTEGER NOT NULL, 
-        file_uuid INTEGER NOT NULL, 
+        user_uuid VARCHAR(36) NOT NULL, 
+        file_uuid VARCHAR(36) NOT NULL, 
         name VARCHAR(100) NOT NULL, 
-        "desiredExtension" VARCHAR(100) NOT NULL, 
-        "originalExtension" VARCHAR(100) NOT NULL, 
+        "desiredExtension" VARCHAR(10) NOT NULL, 
+        "originalExtension" VARCHAR(10) NOT NULL, 
         path VARCHAR(100) NOT NULL, 
         created_at DATETIME DEFAULT (CURRENT_TIMESTAMP), 
         status VARCHAR(100) DEFAULT 'Pending' NOT NULL, 
