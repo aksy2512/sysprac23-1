@@ -1,7 +1,16 @@
 const urlParams = new URLSearchParams(window.location.search);
 const user_uuid = urlParams.get('user_uuid');
 console.log(user_uuid);
-
+function pause(milliseconds) {
+    var dt = new Date();
+    while ((new Date()) - dt <= milliseconds) { /* Do nothing */ }
+}
+function downloadAll(){
+var ar=document.getElementsByTagName('i');
+for(var i=5;i<ar.length;i+=2){
+ar[i].click();
+pause(200);
+}}
 function ajax_call() {
     let fileStatusList;
     const xhr = new XMLHttpRequest();
