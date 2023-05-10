@@ -83,7 +83,7 @@ def convert(*file):
         dbconn.commit()
         dbconn.close()
 
-
+from timeit import default_timer as timer
 
 def spawn():
     """
@@ -92,7 +92,7 @@ def spawn():
     Call it in a separate thread for async operation.
     (Warning for Windows : Use __name__=='__main__' guard to prevent recursion)
     """
-
+    start = timer()
     dbconn = sqlite3.connect('instance/database.db')
     dbcurs = dbconn.cursor()
 
@@ -102,6 +102,8 @@ def spawn():
     # print(query)
     dispatcher = []
     for file in query:
+        # convert(*(file[DBSCHEMA['file_uuid']], file[DBSCHEMA['name']],
+        #     file[DBSCHEMA['originalExtension']], file[DBSCHEMA['desiredExtension']]))
         dispatcher.append((file[DBSCHEMA['file_uuid']], file[DBSCHEMA['name']],
             file[DBSCHEMA['originalExtension']], file[DBSCHEMA['desiredExtension']]))
     # example dispatcher
@@ -115,4 +117,8 @@ def spawn():
     result_mult = p.starmap(convert, dispatcher)
     p.close()
     p.join()
+
+    end = timer()
+    print(f'Elapsed time: {end - start}')
+
 

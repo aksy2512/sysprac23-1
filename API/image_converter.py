@@ -6,7 +6,7 @@ def convert_image(file):
     """
     file = (uuid, name, srctype, targettype)
     """
-    time.sleep(random.random()*2)
+    time.sleep(random.random()*5)
     image = Image.open(f'uploads/{file[1]}', 'r')
     if image.mode != "RGBA" and file[3].lower() == "png":
         image = image.convert("RGBA")
